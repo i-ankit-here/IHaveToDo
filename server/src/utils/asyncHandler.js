@@ -1,8 +1,9 @@
-const asyncHandler = (fn) => async(rew,res,next) =>{
+const asyncHandler = (fn) => async(req,res,next) =>{
     try {
-        await fn(requestAnimationFrame,res,next);
+        return await fn(req,res,next);
     } catch (error) {
-        res.status(error.code||500).json({
+        res.status(error.statusCode||500).json({
+            statusCode:error.statusCode||500,
             success: false,
             message: error.message,
         })
