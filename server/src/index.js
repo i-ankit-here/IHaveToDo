@@ -12,8 +12,8 @@ connectDB()
         console.error("Error accured while creating app: ",error);
         throw error;
     })
-    app.listen(process.env.PORT || 8000,()=>{
-        console.log("App is listening: ",process.env.PORT)
+    app.listen(process.env.PORT || 8010,()=>{
+        console.log("App is listening on port: ",process.env.PORT)
     });
 })
 .catch((error)=>{
