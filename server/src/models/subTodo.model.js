@@ -4,6 +4,11 @@ const subTodoSchema = new mongoose.Schema({
     content:{
         type : String,
     },
+    parent:{
+        type : mongoose.Schema.Types.ObjectId,
+        ref : "Todo"
+    }
+    ,
     complete:{
         type : Boolean,
         default : false,
