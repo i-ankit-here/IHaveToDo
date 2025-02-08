@@ -13,3 +13,5 @@ const todoSchema = new mongoose.Schema({
     total: Number,
     completed: Number,
 }, { timestamps: true })
+
+export const todo = mongoose.model("Todo",todoSchema);
