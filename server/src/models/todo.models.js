@@ -5,12 +5,6 @@ const todoSchema = new mongoose.Schema({
         type: String,
         required: [true, "Todo Type is required"]
     },
-    content: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "SubTodo",
-        }
-    ],
     createdBy: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
