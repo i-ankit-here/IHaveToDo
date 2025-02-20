@@ -14,4 +14,4 @@ const todoSchema = new mongoose.Schema({
     completed: Number,
 }, { timestamps: true })
 
-export const todo = mongoose.model("Todo",todoSchema);
+export const Todo = mongoose.model("Todo",todoSchema);
