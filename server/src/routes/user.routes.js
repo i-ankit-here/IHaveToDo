@@ -5,12 +5,12 @@ import {verifyJWT} from "../middlewares/auth.middleware.js";
 
 const router = Router();
 
-router.route("/register").post(upload.single("avatar"),registerUser);
+router.route("/register").post(registerUser);
 router.route("/login").post(loginUser);
 router.route("/logout").get(verifyJWT,logoutUser);
 router.route("/regenerate").get(regenerateAccessToken)
 router.route("/getUser").get(verifyJWT,getUser);
-router.route("/updatePassword").post(verifyJWT,updatePassword);
+router.route("/updatePassword").put(verifyJWT,updatePassword);
 
 
 
