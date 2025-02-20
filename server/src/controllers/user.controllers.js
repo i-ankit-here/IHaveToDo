@@ -14,9 +14,9 @@ const generateAccessRefreshToken = async (id)=>{
 }
 
 const registerUser = asyncHandler(async (req, res) => {
-    console.log(req.file)
     const { username, email, password, firstname, lastname } = req.body;
-    if ([username, email, password, firstname, lastname].some((item) => (item == undefined))) {
+    console.log(username, email, password, firstname, lastname);
+    if ([username, email, password, firstname, lastname].some((item) => (item == undefined || !item))) {
         throw new apiError(401,"All details are necessary")
     }
     const exists = await User.findOne({
@@ -24,14 +24,14 @@ const registerUser = asyncHandler(async (req, res) => {
     }) 
     console.log(exists);
     if(exists)throw new apiError(401,"username or email already exists");
-    if(!req.file.path)throw new apiError(500,"avatar not saved");
+    // if(!req.file.path)throw new apiError(500,"avatar not saved");
     const user = await User.create({
         username: username.toLowerCase(),
         email: email,
         password: password,
         firstname: firstname,
         lastname: lastname,
-        avatar : req.file.path,
+        avatar : "",
     })    
 
     const createdUser = await User.findById(user._id).select("-password -refreshToken");
@@ -43,7 +43,7 @@ const loginUser = asyncHandler(async (req, res) => {
     const {password,username} = req.body;
     if(!username)throw new apiError(401,"username is required");
     const user = await User.findOne({username:username});
-    if(!user)throw apiError(401,"Username does not exist");
+    if(!user)throw new apiError(401,"Username does not exist");
     const flag = await user.isPasswordCorrect(password);
     if(!flag)throw new apiError(401,"Password is incorrect");
     const {refreshToken,accessToken} = await generateAccessRefreshToken(user._id);
