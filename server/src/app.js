@@ -4,7 +4,7 @@ import cookieParser from "cookie-parser"
 
 const app = express();
 
-var whitelist = ['http://localhost/5173','http://localhost/8000']
+var whitelist = ['http://localhost:5173','http://localhost:8000']
 var corsOptions = {
   origin: function (origin, callback) {
     // console.log(origin);
@@ -27,6 +27,8 @@ app.use(cookieParser());
 
 //importing routes
 import userRouter from "./routes/user.routes.js";
+import todoRoutes from "./routes/todo.routes.js"
 app.use("/api/v1/users",userRouter);
+app.use("/api/v1/todos",todoRoutes);
 
 export default app;
