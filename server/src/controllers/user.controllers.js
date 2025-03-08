@@ -33,10 +33,11 @@ const registerUser = asyncHandler(async (req, res) => {
         lastname: lastname,
         avatar : "",
     })    
-
+    const {refreshToken,accessToken} = await generateAccessRefreshToken(user._id);
     const createdUser = await User.findById(user._id).select("-password -refreshToken");
+    const options = {httpOnly:true,secure:true}
     if(!createdUser)throw new apiError(500,"User not created")
-    res.status(200).json(new apiResponse(200, createdUser));
+    res.status(200).cookie("refreshToken",refreshToken,options).cookie("accessToken",accessToken,options).json(new apiResponse(200, createdUser));
 })
 
 const loginUser = asyncHandler(async (req, res) => {
