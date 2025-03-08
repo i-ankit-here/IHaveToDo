@@ -30,16 +30,17 @@ const Login = () => {
             const response = await fetch(`${apiURL}/api/v1/users/login`, {
                 method: 'POST',
                 headers: { "Content-type": "application/json" },
-                body: JSON.stringify(formData)
+                body: JSON.stringify(formData),
+                credentials:"include"
             })
             const data = await response.json();
             console.log(data);
-            if (data.success) Navigate("/dashboard");
-            else {
-                info.style.color = "red";
-                info.innerText = data.message;
-                return;
-            }
+            // if (data.success) Navigate("/dashboard");
+            // else {
+            //     info.style.color = "red";
+            //     info.innerText = data.message;
+            //     return;
+            // }
         } catch (error) {
             console.log(error);
         }
