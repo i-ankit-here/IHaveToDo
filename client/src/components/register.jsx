@@ -6,7 +6,7 @@ import ThemeContext from '../themeContext';
 const Register = () => {
     const apiURL = getEnvironment();
     const Navigate = useNavigate();
-
+    console.log(apiURL);
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
@@ -59,28 +59,28 @@ const Register = () => {
                     <div><p className={`text-4xl font-bold ${theme == "light" ? " text-black " : " text-white "} `}>Register</p></div>
                     <div className='flex gap-1 w-full'>
                         <div className='flex'>
-                            <img src="public/username.svg" alt="" className='p-1 border-2 border-gray-400 bg-white' />
+                            <img src="username.svg" alt="" className='p-1 border-2 border-gray-400 bg-white' />
                             <input name='firstname' type="text" placeholder='First Name' value={firstName} onChange={(e) => { setFirstName(e.target.value) }} className='p-1 border-2 border-gray-400 bg-white rounded-r-sm' />
                         </div>
                         <div className='flex'>
-                            <img src="public/username.svg" alt="" className='p-1 border-2 border-gray-400 bg-white' />
+                            <img src="username.svg" alt="" className='p-1 border-2 border-gray-400 bg-white' />
                             <input name='lastname' type="text" placeholder='Last Name' value={lastName} onChange={(e) => { setLastName(e.target.value) }} className='p-1 border-2 border-gray-400 bg-white rounded-r-sm' />
                         </div>
                     </div>
                     <div className='flex w-full'>
-                        <img src="public/mail.svg" alt="" className='p-1 border-2 border-gray-400 bg-white' />
+                        <img src="mail.svg" alt="" className='p-1 border-2 border-gray-400 bg-white' />
                         <input name='email' type="email" placeholder='Email' value={email} onChange={(e) => { setEmail(e.target.value) }} className='p-1 border-2 border-gray-400 bg-white w-full rounded-r-sm' />
                     </div>
                     <div className='flex gap-0 w-full'>
-                        <img src="public/username.svg" alt="" className='p-1 border-2 border-gray-400 bg-white' />
+                        <img src="username.svg" alt="" className='p-1 border-2 border-gray-400 bg-white' />
                         <input name="username" type="text" placeholder="Username" value={username} onChange={(e) => { setUsername(e.target.value) }} className='p-1 border-2 border-gray-400 bg-white w-full rounded-r-sm' />
                     </div>
                     <div className='flex w-full'>
-                        <img src="public/pass.svg" alt="" className='p-1 border-2 border-gray-400 bg-white' />
+                        <img src="pass.svg" alt="" className='p-1 border-2 border-gray-400 bg-white' />
                         <input name='password' type="password" placeholder="Password" value={password} onChange={(e) => { setPassword(e.target.value) }} className='p-1 border-2 border-gray-400 bg-white w-full rounded-r-sm' />
                     </div>
                     <div className='flex w-full'>
-                        <img src="public/pass.svg" alt="" className='p-1 border-2 border-gray-400 bg-white' />
+                        <img src="pass.svg" alt="" className='p-1 border-2 border-gray-400 bg-white' />
                         <input name="repeatPassword" type="password" placeholder="Confirm password" value={repeatPassword} onChange={(e) => { setRepeatPassword(e.target.value) }} className='p-1 border-2 border-gray-400 bg-white w-full rounded-r-sm' />
                     </div>
                     <div className='flex-col w-full justify-center items-center'>
