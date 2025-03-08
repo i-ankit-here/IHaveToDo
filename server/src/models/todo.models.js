@@ -10,6 +10,7 @@ const todoSchema = new mongoose.Schema({
         ref: "User",
     },
     color: String,
+    textCol: String,
     total: Number,
     completed: Number,
 }, { timestamps: true })
