@@ -25,15 +25,24 @@ const Register = () => {
                 info.innerText = "Password and Confirm password are different";
                 return;
             }
-            const formData = new FormData(document.getElementById("form"));
+            const formData = {
+                username:username,
+                password:password,
+                firstname:firstName,
+                lastname:lastName,
+                email:email
+            }
             const response = await fetch(`${apiURL}/api/v1/users/register`, {
                 method: 'POST',
-                // credentials: 'include',
-                body: formData
+                headers:{"Content-type":"application/json"},
+                credentials: 'include',
+                body: JSON.stringify(formData)
             })
-            const data = await response.json();
-            console.log(data);
-            if (data.success) Navigate("/dashboard");
+            if (response.ok) {
+                const data = await response.json();
+                console.log(data);
+                Navigate("/dashboard");
+            }
             else {
                 info.style.color = "red";
                 info.innerText = data.message;

@@ -5,10 +5,9 @@ function Navbar() {
   const [theme,setTheme] = useContext(ThemeContext)
   console.log(theme)
   return (
-    <div className={`w-full h-15 absolute top-0 flex justify-between  items-center m-0`}>
-      <img src="public/iHaveToDo.svg" className={`h-6 ml-4 ${theme=="light"?" invert-100 ":" "}`} alt="" />
+    <div className={`w-dvw h-15 absolute top-0 flex justify-end  items-center m-0`}>
+      
       <div className={`${theme=="light"?"text-black ":"text-white "} flex items-center`}>
-        
         {theme=="light"?<img src="public/darkTheme.png" width="40px" height="40px" className='rounded-full cursor-pointer' alt=""
         onClick={()=>{
           localStorage.setItem('theme', 'dark');
