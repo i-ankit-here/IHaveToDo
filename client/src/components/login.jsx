@@ -52,11 +52,11 @@ const Login = () => {
                     <div><p className={`text-4xl font-bold ${theme == "light" ? " text-black " : " text-white "} `}>Sign In</p></div>
 
                     <div className='flex w-full'>
-                        <img src="public/username.svg" alt="" className='p-1 border-2 border-gray-300 bg-white' />
+                        <img src="username.svg" alt="" className='p-1 border-2 border-gray-300 bg-white' />
                         <input name="username" type="text" placeholder="Username" value={username} onChange={(e) => { setUsername(e.target.value) }} className='p-1 border-2 border-gray-300 bg-white w-full rounded-r-sm' />
                     </div>
                     <div className='flex w-full'>
-                        <img src="public/pass.svg" alt="" className='p-1 border-2 border-gray-300 bg-white' />
+                        <img src="pass.svg" alt="" className='p-1 border-2 border-gray-300 bg-white' />
                         <input name='password' type="password" placeholder="Password" value={password} onChange={(e) => { setPassword(e.target.value) }} className='p-1 border-2 border-gray-300 bg-white w-full rounded-r-sm' />
                     </div>
                     <div className='flex-col w-full justify-center items-center'>

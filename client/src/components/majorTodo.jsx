@@ -94,7 +94,7 @@ const MajorTodo = () => {
         <>
             <div className='flex gap-1 h-dvh overflow-y-hidden'>
                 <div className={`w-[27dvw] rounded-lg h-[100dvh] ${theme=="light"?" bg-neutral-100 border-r-2 border-neutral-200 ":" bg-lightGrey "} pt-10 flex-col items-center`}>
-                    <div className='flex justify-center w-100'><img src="public/iHaveToDo.svg" className={`h-10 ${theme == "light" ? " invert-100 " : " "}`} alt="" /></div>
+                    <div className='flex justify-center w-100'><img src="iHaveToDo.svg" className={`h-10 ${theme == "light" ? " invert-100 " : " "}`} alt="" /></div>
                     <div className='flex-col w-[27dvw]'>
                         <div className='m-3 pt-10 border-b-2 border-gray-200'>
                             <p className={`text-2xl ${theme=="light"?" text-neutral-600 ":" text-neutral-300 "}`}>#Your Tasks</p>
@@ -123,15 +123,15 @@ const MajorTodo = () => {
                             // onClick={() => { console.log("I am clicked") }}
                             >
                                 <div className='w-full md:w-75 flex justify-between'>
-                                    <img src="public/edit.png" className={`w-10 p-1 hover:bg-gray-900 rounded-full ${theme == "light" ? " invert-100 " : " invert-100 "} `} alt=""
+                                    <img src="edit.png" className={`w-10 p-1 hover:bg-gray-900 rounded-full ${theme == "light" ? " invert-100 " : " invert-100 "} `} alt=""
                                         onClick={(e) => {
                                             setTitle(item.title)
                                             setView(index);
                                         }}
                                     />
                                     {view != index ?
-                                        (<img src="public/color.png" className={`w-10 p-1 hover:bg-gray-900 rounded-full ${theme == "light" ? " invert-100 " : " invert-100 "} `} alt="" />)
-                                        : (<img src="public/delete.png" className={`w-10 p-1 hover:bg-gray-900 rounded-full ${theme == "light" ? " invert-100 " : " invert-100 "}`} alt="" />)}
+                                        (<img src="color.png" className={`w-10 p-1 hover:bg-gray-900 rounded-full ${theme == "light" ? " invert-100 " : " invert-100 "} `} alt="" />)
+                                        : (<img src="delete.png" className={`w-10 p-1 hover:bg-gray-900 rounded-full ${theme == "light" ? " invert-100 " : " invert-100 "}`} alt="" />)}
                                 </div>
                                 {view != index ? (<div className='w-full md:w-65 font-bold pb-8 text-4xl varela-round-regular text-center'>
                                     <p>{item.title}</p>
@@ -154,7 +154,7 @@ const MajorTodo = () => {
                         <div className={`w-full md:w-80 md:h-80 p-3 rounded-sm text-white flex justify-center items-center flex-col ${theme == "light" ? "bg-neutral-300" : "bg-lightGrey"} cursor-pointer`}>
                             <div className={`w-30 h-30 rounded-full flex justify-center items-center ${theme == "light" ? " bg-neutral-400 " : " bg-neutral-500 "} hover:bg-neutral-600`}
                                 onClick={addNewTodo}>
-                                <img src="public/plusIcon.png" className={`w-20 ${theme == "light" ? " invert-100 " : ""}`} alt="" />
+                                <img src="plusIcon.png" className={`w-20 ${theme == "light" ? " invert-100 " : ""}`} alt="" />
                             </div>
                         </div>
                     </div>
