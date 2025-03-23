@@ -6,6 +6,6 @@ const router = Router();
 
 router.route("/getTodos").get(verifyJWT,getTodos);
 router.route("/addTodo").post(verifyJWT,addTodo);
-router.route("/deleteTodo/:id").get(verifyJWT,deleteTodo);
+router.route("/deleteTodo/:id").delete(verifyJWT,deleteTodo);
 
 export default router;
