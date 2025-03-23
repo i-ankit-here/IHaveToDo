@@ -16,12 +16,13 @@ const MajorTodo = () => {
     useEffect(()=>{
         const fecthData = async()=>{
             try {
-                const response = await fetch(`${apiURL}/api/v1/todos/getTodo`,{
+                const response = await fetch(`${apiURL}/api/v1/todos/getTodos`,{
                     method:"GET",
                     credentials:"include"
                 })
                 if(response.ok){
                     const data = await response.json();
+                    setMajorTodos(data?.data?.todos);
                     console.log(response,data);
                 }else{
                     throw new Error("Failed to fetch data")
@@ -31,7 +32,7 @@ const MajorTodo = () => {
             }
         }
         fecthData();
-    })
+    },[])
 
     const addNewTodo = async()=>{
         try {
@@ -50,7 +51,9 @@ const MajorTodo = () => {
             })
             console.log(response);
             if(response.ok){
-                const newMajorTodos = [...majorTodos,todo];
+                const data = await response.json();
+                console.log(data);
+                const newMajorTodos = [...majorTodos,data?.data?.createdTodo];
                 setMajorTodos(newMajorTodos);
             }else{
                 alert("Some issue occured while updating the Task");
@@ -58,6 +61,26 @@ const MajorTodo = () => {
         } catch (error) {
             console.log("error: ",error);
             alert("Some issue occured while updating the Task");
+        }
+    }
+
+    const deleteTodo = async(item,index)=>{
+        try {
+            const id = item._id;
+            const response = await fetch(`${apiURL}/api/v1/todos/deleteTodo/${id}`,{
+                method:"DELETE",
+                credentials: "include"           
+            })
+            if(response.ok){
+                console.log("Todo deleted Successfully",response);
+                const arr = majorTodos;
+                arr.splice(index,1);
+                setView(-1);
+                setMajorTodos(arr);
+            }
+        } 
+        catch (error) {
+            console.log("Error occured, ",error)    
         }
     }
 
@@ -94,7 +117,7 @@ const MajorTodo = () => {
         <>
             <div className='flex gap-1 h-dvh overflow-y-hidden'>
                 <div className={`w-[27dvw] rounded-lg h-[100dvh] ${theme=="light"?" bg-neutral-100 border-r-2 border-neutral-200 ":" bg-lightGrey "} pt-10 flex-col items-center`}>
-                    <div className='flex justify-center w-100'><img src="iHaveToDo.svg" className={`h-10 ${theme == "light" ? " invert-100 " : " "}`} alt="" /></div>
+                    <div className='flex justify-center w-full px-2'><img src="iHaveToDo.svg" className={`h-10 ${theme == "light" ? " invert-100 " : " "}`} alt="" /></div>
                     <div className='flex-col w-[27dvw]'>
                         <div className='m-3 pt-10 border-b-2 border-gray-200'>
                             <p className={`text-2xl ${theme=="light"?" text-neutral-600 ":" text-neutral-300 "}`}>#Your Tasks</p>
@@ -131,7 +154,11 @@ const MajorTodo = () => {
                                     />
                                     {view != index ?
                                         (<img src="color.png" className={`w-10 p-1 hover:bg-gray-900 rounded-full ${theme == "light" ? " invert-100 " : " invert-100 "} `} alt="" />)
-                                        : (<img src="delete.png" className={`w-10 p-1 hover:bg-gray-900 rounded-full ${theme == "light" ? " invert-100 " : " invert-100 "}`} alt="" />)}
+                                        : (<img src="delete.png"  className={`w-10 p-1 hover:bg-gray-900 rounded-full ${theme == "light" ? " invert-100 " : " invert-100 "}`}
+                                            onClick={async(e) => {
+                                                console.log(item);
+                                               await deleteTodo(item,index)
+                                            }} alt="" />)}
                                 </div>
                                 {view != index ? (<div className='w-full md:w-65 font-bold pb-8 text-4xl varela-round-regular text-center'>
                                     <p>{item.title}</p>
