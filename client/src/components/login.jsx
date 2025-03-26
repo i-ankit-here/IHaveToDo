@@ -11,7 +11,7 @@ const Login = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
-    const [theme, setTheme] = useContext(ThemeContext);
+    const {theme, setTheme,user,setUser} = useContext(ThemeContext);
 
     const submit = async (event) => {
         try {
@@ -35,12 +35,17 @@ const Login = () => {
             })
             const data = await response.json();
             console.log(data);
-            // if (data.success) Navigate("/dashboard");
-            // else {
-            //     info.style.color = "red";
-            //     info.innerText = data.message;
-            //     return;
-            // }
+            if (data.success) {
+                setUser(data?.data?.user);
+                info.style.color = theme=="light"?"green":"chartreuse";
+                info.innerText = "User logged in successfully "
+                Navigate("/dashboard");
+            }
+            else {
+                info.style.color = "red";
+                info.innerText = data.message;
+                return;
+            }
         } catch (error) {
             console.log(error);
         }
@@ -61,7 +66,7 @@ const Login = () => {
                     </div>
                     <div className='flex-col w-full justify-center items-center'>
                         <button type='submit' className='bg-gray-200 rounded-full hover:bg-gray-400 p-2 w-full'>Sign In</button>
-                        <div><p id="info" className='text-center' ></p></div>
+                        <div><p id="info" className='text-center text-md mt-1 pt-1' ></p></div>
                     </div>
                 </div>
             </form>
