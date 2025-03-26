@@ -14,7 +14,7 @@ const Register = () => {
     const [password, setPassword] = useState("");
     const [repeatPassword, setRepeatPassword] = useState("");
 
-    const [theme, setTheme] = useContext(ThemeContext);
+    const {theme, setTheme} = useContext(ThemeContext);
 
     const submit = async (event) => {
         try {
