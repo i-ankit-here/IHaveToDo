@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import ThemeContext from './../themeContext';
 
 function Navbar() {
-  const [theme,setTheme] = useContext(ThemeContext)
+  const {theme,setTheme} = useContext(ThemeContext)
   console.log(theme)
   return (
     <div className={`w-dvw h-15 absolute top-0 flex justify-end  items-center m-0`}>
