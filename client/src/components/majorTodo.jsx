@@ -42,7 +42,6 @@ const MajorTodo = () => {
     }, [])
 
     const addNewTodo = async () => {
-        e.stopPropagation()
         try {
             const todo = {
                 title: "Edit Title",
