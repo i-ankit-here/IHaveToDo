@@ -22,10 +22,10 @@ const addTodo = asyncHandler(async(req,res,next)=>{
     if(!user){
         throw new apiError(401,"Invalid request");
     }
-    const {id,title,color,textCol,total,completed} = req.body;
-    console.log(id,title,color,textCol,total,completed)
-    if(id){
-        const todo = await Todo.findById(id);
+    const {_id,title,color,textCol,total,completed} = req.body;
+    console.log(_id,title,color,textCol,total,completed)
+    if(_id){
+        const todo = await Todo.findById(_id);
         if(!todo){
             throw new apiError(401,"Invalid todo Id");
         }
