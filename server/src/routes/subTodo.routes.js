@@ -5,9 +5,9 @@ import { getSubTodos,addSubTodo,deleteSubTodo,updateSubTodo } from "../controlle
 const router = Router();
 
 router.route("/getSubTodos/:majorTodoId").get(verifyJWT,getSubTodos);
-router.route("/todos/getSubTodos/:majorTodoId").post(verifyJWT,addSubTodo);
-router.route("/todos/getSubTodos/:majorTodoId").delete(verifyJWT,deleteSubTodo);
-router.route("/todos/getSubTodos/:majorTodoId").put(verifyJWT,updateSubTodo);
+router.route("/addSubTodo").post(verifyJWT,addSubTodo);
+router.route("/deleteSubTodo").delete(verifyJWT,deleteSubTodo);
+router.route("/updateSubTodo").put(verifyJWT,updateSubTodo);
 
 export default router;
 
