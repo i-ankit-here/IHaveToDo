@@ -6,6 +6,7 @@ import Navbar from './components/Navbar'
 import MajorTodo from './components/majorTodo'
 import Register from './components/register';
 import Login from './components/login';
+import Todo from './components/todo';
 import getEnvironment from '../getEnvironment';
 
 function App() {
@@ -52,6 +53,7 @@ function App() {
             <Route path="dashboard" element={<MajorTodo />} />
             <Route path='register' element={<Register />} />
             <Route path='login' element={<Login />} />
+            <Route path='todos/:id' element={<Todo/>}></Route>
           </Route>
         </Routes>
       </BrowserRouter>
