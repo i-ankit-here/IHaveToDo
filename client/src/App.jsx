@@ -8,6 +8,7 @@ import Register from './components/register';
 import Login from './components/login';
 import Todo from './components/todo';
 import getEnvironment from '../getEnvironment';
+import Home from './components/home';
 
 function App() {
   const apiURL = getEnvironment();
@@ -50,6 +51,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path='/'>
+            <Route index element={<Home />} />
             <Route path="dashboard" element={<MajorTodo />} />
             <Route path='register' element={<Register />} />
             <Route path='login' element={<Login />} />
