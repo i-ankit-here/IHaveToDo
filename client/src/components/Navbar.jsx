@@ -3,9 +3,10 @@ import ThemeContext from './../themeContext';
 
 function Navbar() {
   const {theme,setTheme} = useContext(ThemeContext)
+  const path = window.location.pathname;
   console.log(theme)
   return (
-    <div className={`w-dvw h-15 absolute top-0 flex justify-end  items-center m-0`}>
+    <div className={`h-15 ${path==="/"?" sticky ":" absolute "} top-0 right-1 flex justify-end items-center m-0 ${theme=="light"?"bg-white":"bg-grey"} z-20 `}>
       
       <div className={`${theme=="light"?"text-black ":"text-white "} flex items-center`}>
         {theme=="light"?<img src="/darkTheme.png" width="40px" height="40px" className='rounded-full cursor-pointer' alt=""
