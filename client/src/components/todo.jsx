@@ -220,12 +220,12 @@ const Todo = () => {
                                                     </div>
                                                 </div> :
                                                     <div className='flex gap-2 rounded-sm p-2 w-full justify-between items-center'>
-                                                        <input type="text" className={` w-full border-2 rounded-lg p-1 ${theme == "light" ? "bg-blue-200 text-white border-black " : " text-white bg-neutral-700 border-white "}`} value={title} onClick={(e) => { e.stopPropagation() }} onChange={(e) => {
+                                                        <input type="text" className={` w-full border-2 rounded-lg p-1 ${theme == "light" ? "bg-blue-200 text-black border-black " : " text-white bg-neutral-700 border-white "}`} value={title} onClick={(e) => { e.stopPropagation() }} onChange={(e) => {
                                                             e.stopPropagation()
                                                             setTitle(e.target.value);
                                                         }} />
-                                                        <button type="button" className={`w-30 border-2 rounded-3xl p-2 ${theme == "light" ? "bg-blue-200 border-black" : "bg-neutral-600 border-white"} cursor-pointer`} onClick={(e) => { e.stopPropagation(); save(index); }}>Save</button>
-                                                        <button type="button" className={`w-30 border-2 rounded-3xl p-2 ${theme == "light" ? "bg-blue-200 border-black" : "bg-neutral-600 border-white"} cursor-pointer`}
+                                                        <button type="button" className={`w-30 border-2 rounded-3xl p-2 ${theme == "light" ? "bg-blue-200 border-black" : "bg-neutral-600 border-white text-white"} cursor-pointer`} onClick={(e) => { e.stopPropagation(); save(index); }}>Save</button>
+                                                        <button type="button" className={`w-30 border-2 rounded-3xl p-2 ${theme == "light" ? "bg-blue-200 border-black" : "bg-neutral-600 border-white text-white"} cursor-pointer`}
                                                             onClick={(e) => {
                                                                 e.stopPropagation();
                                                                 if (!todos[index]._id) {
