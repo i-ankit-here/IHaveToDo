@@ -100,8 +100,11 @@ const MajorTodo = () => {
                 const data = await response.json();
                 const newMajorTodos = majorTodos;
                 console.log(data.data);
-                newMajorTodos[index] = data?.data?.createdTodo;
+                if(!todo._id)newMajorTodos[index] = data?.data?.createdTodo;
+                else newMajorTodos[index] = data?.data?.updatedTodo;
                 setMajorTodos(newMajorTodos);
+                setTitle("");
+                setEnableColor(false);
                 setView(-1);
             } else {
                 alert("Some issue occured while updating the Task");
