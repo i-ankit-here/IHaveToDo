@@ -47,8 +47,8 @@ function App() {
 
   return (
     <ThemeContext.Provider value={{theme,setTheme,user:user,setUser}}>
-      <Navbar />
       <BrowserRouter>
+        <Navbar />
         <Routes>
           <Route path='/'>
             <Route index element={<Home />} />
