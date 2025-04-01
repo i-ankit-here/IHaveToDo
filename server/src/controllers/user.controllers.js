@@ -35,7 +35,7 @@ const registerUser = asyncHandler(async (req, res) => {
     })    
     const {refreshToken,accessToken} = await generateAccessRefreshToken(user._id);
     const createdUser = await User.findById(user._id).select("-password -refreshToken");
-    const options = {httpOnly:true,secure:true}
+    const options = {httpOnly:true,secure:true,sameSite: "none"}
     if(!createdUser)throw new apiError(500,"User not created")
     res.status(200).cookie("refreshToken",refreshToken,options).cookie("accessToken",accessToken,options).json(new apiResponse(200, createdUser));
 })
@@ -49,7 +49,7 @@ const loginUser = asyncHandler(async (req, res) => {
     if(!flag)throw new apiError(401,"Password is incorrect");
     const {refreshToken,accessToken} = await generateAccessRefreshToken(user._id);
     const createdUser = await User.findById(user._id).select("-password -refreshToken");
-    const options = {httpOnly:true,secure:true}
+    const options = {httpOnly:true,secure:true, sameSite: "none"}
     res.status(200).cookie("refreshToken",refreshToken,options).cookie("accessToken",accessToken,options).json(
         new apiResponse(200,{
             user:createdUser,
@@ -73,7 +73,7 @@ const logoutUser = asyncHandler(async (req, res) => {
         }
     )
     console.log(user)
-    const options = {httpOnly:true,secure:true}
+    const options = {httpOnly:true,secure:true,sameSite: "none"}
     res.status(200)
     .clearCookie("accessToken",options)
     .clearCookie("refreshToken",options)
@@ -97,7 +97,7 @@ const regenerateAccessToken = asyncHandler(async (req,res)=>{
     user.refreshToken = newRefreshToken;
     await user.save();
     const createdUser = await User.findById(user.id);
-    const options = {httpOnly:true,secure:true};
+    const options = {httpOnly:true,secure:true,sameSite: "none"};
 
     res.status(200)
     .cookies("accessToken",newAccessToken,options)
