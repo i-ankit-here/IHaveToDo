@@ -4,7 +4,7 @@ import cookieParser from "cookie-parser"
 
 const app = express();
 
-var whitelist = ['http://localhost:5173','http://localhost:8000']
+var whitelist = ['http://localhost:5173','http://localhost:8000',"https://ihavtodo.netlify.app"]
 var corsOptions = {
   origin: function (origin, callback) {
     console.log(origin);
