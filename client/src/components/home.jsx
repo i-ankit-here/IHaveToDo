@@ -6,15 +6,13 @@ import getEnvironment from '../../getEnvironment';
 const Home = () => {
     const { theme } = useContext(ThemeContext);
 
-    const [imageSrc, setImageSrc] = useState("/Categories.png");
-    const [image, setImage] = useState("hidden");
     const apiURL = getEnvironment();
     const navigate = useNavigate();
 
 
 
     return (
-        <div>
+        <div>                   
             <div className=' w-50 sticky mt-[-44px] top-4 pl-10 z-20'>
                 <img src="/iHaveToDo.svg" alt="" className={`${theme == "light" ? "invert-100" : ""} w-full`} />
             </div>
