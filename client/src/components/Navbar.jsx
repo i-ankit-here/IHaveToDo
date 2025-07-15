@@ -14,8 +14,6 @@ function Navbar() {
   useEffect(()=>{
     setShow(window.location.pathname);
   },[window.location.pathname])
-  console.log(show);
-  console.log(theme)
 
   const logoutUser = async()=>{
     try {
