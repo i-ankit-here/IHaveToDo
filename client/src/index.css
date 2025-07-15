@@ -24,3 +24,12 @@
   font-weight: 700;
   font-style: normal;
 }
+
+@keyframes slide {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(400%); }
+}
+
+.slider {
+  animation: slide 0.8s linear infinite;
+}
