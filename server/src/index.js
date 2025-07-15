@@ -13,7 +13,7 @@ connectDB()
         throw error;
     })
     app.listen(process.env.PORT || 8010,()=>{
-        console.log("App is listening on port: ",process.env.PORT)
+        console.log("App is listening on port: ",process.env.PORT || 8010)
     });
 })
 .catch((error)=>{
