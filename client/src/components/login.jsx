@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react'
 import { useNavigate } from 'react-router-dom';
 import getEnvironment from '../../getEnvironment';
 import ThemeContext from '../themeContext';
-import { Form } from 'react-router-dom';
+
 
 const Login = () => {
     const apiURL = getEnvironment();
@@ -10,14 +10,17 @@ const Login = () => {
 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const [showSlider,setShowSlider] = useState(false)
 
     const {theme, setTheme,user,setUser} = useContext(ThemeContext);
 
     const submit = async (event) => {
         try {
+            setShowSlider(true);
             event.preventDefault();
             const info = document.getElementById("info");
             if (!password || !username) {
+                setShowSlider(false);
                 info.style.color = "red";
                 info.innerText = "username and password are necessary";
                 return;
@@ -36,39 +39,44 @@ const Login = () => {
             const data = await response.json();
             console.log(data);
             if (data.success) {
+                setShowSlider(false);
                 setUser(data?.data?.user);
                 info.style.color = theme=="light"?"green":"chartreuse";
                 info.innerText = "User logged in successfully "
                 Navigate("/dashboard");
             }
             else {
+                setShowSlider(false);
                 info.style.color = "red";
                 info.innerText = data.message;
                 return;
             }
         } catch (error) {
+            setShowSlider(false);
             console.log(error);
         }
+        setShowSlider(false);
     }
     return (
         <div className={`w-full h-dvh flex justify-center items-center ${theme == "light" ? " bg-white " : " bg-black "}`}>
-            <form id="form" onSubmit={submit} className={`rounded-md h-min w-[90dvw] md:w-80 p-8  ${theme == "light" ? " bg-gray-300 " : " bg-neutral-800 "}`}>
+            <form id="form" onSubmit={submit} className={`relative rounded-md h-min w-[90dvw] md:w-100 p-8 overflow-hidden  ${theme == "light" ? " bg-gray-300 shadow-2xl " : " bg-neutral-800 "}`}>
                 <div className='flex w-full flex-col gap-8 items-center'>
                     <div><p className={`text-4xl font-bold ${theme == "light" ? " text-black " : " text-white "} `}>Sign In</p></div>
 
                     <div className='flex w-full'>
-                        <img src="username.svg" alt="" className='p-1 border-2 border-gray-300 bg-white' />
-                        <input name="username" type="text" placeholder="Username" value={username} onChange={(e) => { setUsername(e.target.value) }} className='p-1 border-2 border-gray-300 bg-white w-full rounded-r-sm' />
+                        <img src="username.svg" alt="" className={`p-1 bg-transparent h-10 ${theme == "light" ? "  " : " invert-100 "}`} />
+                        <input name="username" type="text" placeholder="Username" value={username} onChange={(e) => { setUsername(e.target.value) }} className='p-1 border-2 border-gray-700 bg-white w-full rounded-sm h-10' />
                     </div>
                     <div className='flex w-full'>
-                        <img src="pass.svg" alt="" className='p-1 border-2 border-gray-300 bg-white' />
-                        <input name='password' type="password" placeholder="Password" value={password} onChange={(e) => { setPassword(e.target.value) }} className='p-1 border-2 border-gray-300 bg-white w-full rounded-r-sm' />
+                        <img src="pass.svg" alt="" className={`p-1 bg-transparent h-10 ${theme == "light" ? "  " : " invert-100 "}`} />
+                        <input name='password' type="password" placeholder="Password" value={password} onChange={(e) => { setPassword(e.target.value) }} className='p-1 border-2 border-gray-700 bg-white w-full rounded-sm h-10' />
                     </div>
                     <div className='flex-col w-full justify-center items-center'>
-                        <button type='submit' className='bg-gray-200 rounded-full hover:bg-gray-400 p-2 w-full'>Sign In</button>
+                        <button type='submit' disabled={showSlider} className='bg-gray-50 rounded-sm shadow-2xl hover:bg-gray-200 hover:shadow-2xl p-2 w-full font-medium'>Sign In</button>
                         <div><p id="info" className='text-center text-md mt-1 pt-1' ></p></div>
                     </div>
                 </div>
+                <div className={`absolute bottom-0 left-0 h-1 bg-blue-500 w-30 slider ${showSlider?"block":"hidden"}`} ></div>
             </form>
         </div>
     )
