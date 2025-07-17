@@ -8,6 +8,7 @@ import Register from './components/register';
 import Login from './components/login';
 import Todo from './components/todo';
 import getEnvironment from '../getEnvironment';
+import UpdateProfile from './components/Profile';
 import Home from './components/home';
 
 function App() {
@@ -36,7 +37,7 @@ function App() {
       }
     }
     fetchUser();
-  },[])
+  }, [])
 
   //setting the theme
   useEffect(() => {
@@ -46,7 +47,7 @@ function App() {
   // console.log(user);
 
   return (
-    <ThemeContext.Provider value={{theme,setTheme,user:user,setUser}}>
+    <ThemeContext.Provider value={{ theme, setTheme, user: user, setUser }}>
       <BrowserRouter>
         <Navbar />
         <Routes>
@@ -55,7 +56,8 @@ function App() {
             <Route path="dashboard" element={<MajorTodo />} />
             <Route path='register' element={<Register />} />
             <Route path='login' element={<Login />} />
-            <Route path='todos/:id' element={<Todo/>}></Route>
+            <Route path='profile' element={<UpdateProfile />} />
+            <Route path='todos/:id' element={<Todo />}></Route>
           </Route>
         </Routes>
       </BrowserRouter>

@@ -130,4 +130,25 @@ const getUser = asyncHandler(async(req,res)=>{
     res.status(200).json(new apiResponse(200,{user:req.user},"user sent successfully"));
 })
 
-export { registerUser,loginUser,logoutUser,regenerateAccessToken,updatePassword,getUser };
+const updateUser = asyncHandler(async (req, res) => {
+    const { username, email, firstname, lastname } = req.body;
+    console.log(username, email, firstname, lastname);
+    if ([username, email, firstname, lastname].some((item) => (item == undefined || !item))) {
+        throw new apiError(401,"All details are necessary")
+    }
+    const exists = await User.findOne({
+        $or : [{username:username},{email:email}]
+    }) 
+    console.log(exists);
+    if(!exists)throw new apiError(401,"username or email does not exists");
+    // if(!req.file.path)throw new apiError(500,"avatar not saved");
+    exists.username = username;
+    exists.email = email;
+    exists.firstname = firstname;
+    exists.lastname = lastname;
+    const user = await exists.save();
+    if(!user)throw new apiError(500,"User not created")
+    res.status(200).json(new apiResponse(200, user));
+})
+
+export { registerUser,loginUser,logoutUser,regenerateAccessToken,updatePassword,getUser, updateUser };

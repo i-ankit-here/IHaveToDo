@@ -63,6 +63,7 @@ function Navbar() {
           </button>
           :<button type="button" className='w-25 m-1 ml-3 mr-4 text-xl font-serif text-white cursor-pointer rounded-lg p-1 bg-red-500 hover:bg-red-700'
           onClick={(e) => {
+            e.stopPropagation();
             navigate("/register");
           }}>
           Sign up
@@ -77,7 +78,11 @@ function Navbar() {
           <div className='w-full flex justify-center'>
             <p className={`${theme == "light" ? "text-black " : "text-gray-300 "} font-bold`}>Hi, {user.firstname}</p>
           </div>
-          <div className={`flex gap-2 justify-start cursor-pointer`}>
+          <div className={`flex gap-2 justify-start cursor-pointer`} onClick={(e)=>{
+            e.stopPropagation();
+            setView(false)
+            navigate("/profile");
+          }}>
             <img src="/username.svg" alt="" className={`${theme == "light" ? "invert-40 " : "invert-100 "}`} />
             <p className={`${theme == "light" ? "text-black " : "text-gray-300 "}`}>Profile</p>
           </div>
