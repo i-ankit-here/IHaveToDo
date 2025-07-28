@@ -45,11 +45,12 @@ const addTodo = asyncHandler(async(req,res,next)=>{
             createdBy:user._id,
             textCol:textCol,
             total: total||0,
-            completed:completed||0
+            completed:completed||0,
+            team:[user._id]
         })
         res.status(200).json(new apiResponse(200,{
             createdTodo:createdTodo
-        },"Todo updated Successfully"));
+        },"Todo created Successfully"));
     }
 })
 

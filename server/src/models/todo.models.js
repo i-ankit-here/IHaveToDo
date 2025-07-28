@@ -9,6 +9,10 @@ const todoSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
     },
+    team:{
+        type: [mongoose.Schema.Types.ObjectId],
+        ref: "User",
+    },
     color: String,
     textCol: String,
     total: Number,
