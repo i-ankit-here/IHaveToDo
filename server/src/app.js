@@ -30,8 +30,10 @@ app.use(cookieParser());
 import userRouter from "./routes/user.routes.js";
 import todoRoutes from "./routes/todo.routes.js"
 import subTodoRoutes from "./routes/subTodo.routes.js"
+import inviteRoutes from "./routes/invite.routes.js";
 app.use("/api/v1/users",userRouter);
 app.use("/api/v1/todos",todoRoutes);
 app.use("/api/v1/subTodos",subTodoRoutes);
+app.use("/api/v1/invite", inviteRoutes);
 
 export default app;

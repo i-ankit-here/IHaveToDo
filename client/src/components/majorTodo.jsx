@@ -1,14 +1,14 @@
-import React, { useMemo, useRef } from 'react'
-import { useState, useEffect, useContext } from 'react';
+import { useRef, useState, useEffect, useContext } from 'react';
 import ThemeContext from '../themeContext';
 import getEnvironment from '../../getEnvironment';
 import { SketchPicker } from 'react-color'
-import { useNavigate  } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import Invite from './invite';
 
 
 const MajorTodo = () => {
 
-    const {theme, setTheme, user} = useContext(ThemeContext);
+    const { theme, setTheme, user } = useContext(ThemeContext);
     console.log(user)
     const apiURL = getEnvironment();
 
@@ -19,6 +19,9 @@ const MajorTodo = () => {
     const prev = useRef("");
     const navigate = useNavigate();
     const [enableColor, setEnableColor] = useState(false);
+    const [inviteFlag, setInviteFlag] = useState(false);
+    const [userIds, setUserIds] = useState([]);
+    const [todoId, setTodoId] = useState("");
 
     useEffect(() => {
         const fecthData = async () => {
@@ -44,7 +47,7 @@ const MajorTodo = () => {
     const addNewTodo = async () => {
         try {
             const todo = {
-                _id:undefined,
+                _id: undefined,
                 title: "Edit Title",
                 color: "violet",
                 textCol: "black",
@@ -53,7 +56,7 @@ const MajorTodo = () => {
             };
             const newMajorTodos = [...majorTodos, todo];
             setMajorTodos(newMajorTodos);
-            setView(newMajorTodos.length-1);
+            setView(newMajorTodos.length - 1);
         } catch (error) {
             console.log("error: ", error);
             alert("Some issue occured while updating the Task");
@@ -100,7 +103,7 @@ const MajorTodo = () => {
                 const data = await response.json();
                 const newMajorTodos = majorTodos;
                 console.log(data.data);
-                if(!todo._id)newMajorTodos[index] = data?.data?.createdTodo;
+                if (!todo._id) newMajorTodos[index] = data?.data?.createdTodo;
                 else newMajorTodos[index] = data?.data?.updatedTodo;
                 setMajorTodos(newMajorTodos);
                 setTitle("");
@@ -116,10 +119,11 @@ const MajorTodo = () => {
     }
 
     const cancel = (index) => {
-        if(!majorTodos[index]._id){
+        if (!majorTodos[index]._id) {
             const arr = [...majorTodos];
             arr.pop();
             setMajorTodos(arr);
+            setTitle("");
             setView(-1);
             return;
         }
@@ -130,7 +134,7 @@ const MajorTodo = () => {
 
     return (
         <>
-            <div className='flex gap-1 h-dvh overflow-y-hidden'>
+            <div className={`flex gap-1 h-dvh overflow-y-hidden ${inviteFlag ? "opacity-20" : "opacity-100"}`}>
                 <div className={`w-[27dvw] rounded-lg h-[100dvh] ${theme == "light" ? " bg-neutral-100 border-r-2 border-neutral-200 " : " bg-lightGrey "} pt-10 flex-col items-center`}>
                     <div className='flex justify-center w-full px-2'><img src="/iHaveToDo.svg" className={`h-10 ${theme == "light" ? " invert-100 " : " "}`} alt="" /></div>
                     <div className='flex-col w-[27dvw]'>
@@ -157,26 +161,38 @@ const MajorTodo = () => {
                                 <div
                                     className="w-full md:w-80 md:h-80 p-3 rounded-sm text-white flex justify-between items-center flex-col cursor-pointer "
                                     style={{ background: item.color, color: item.textCol }}
-                                    onClick={()=>{navigate(`../todos/${majorTodos[index]._id}`,{state:item})}}
+                                    onClick={() => { navigate(`../todos/${majorTodos[index]._id}`, { state: item }) }}
                                 >
                                     <div className='w-full md:w-75 flex justify-between'>
-                                        <img src="/edit.png" className={`w-10 p-1 hover:bg-gray-900 rounded-full ${theme == "light" ? " invert-100 " : " invert-100 "} `} alt=""
-                                            onClick={(e) => {
-                                                e.stopPropagation();
-                                                prev.current = majorTodos[index].color;
-                                                console.log(prev.current);
-                                                setTitle(item.title)
-                                                setView(index);
-                                            }}
-                                        />
+
                                         {view != index ?
-                                            (<img src="/delete.png" className={`w-10 p-1 hover:bg-gray-900 rounded-full ${theme == "light" ? " invert-100 " : " invert-100 "}`}
+                                            (<img src="/edit.png" className={`w-10 p-1 hover:opacity-80 rounded-full ${theme == "light" ? " invert-100 " : " invert-100 "} `} alt=""
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    prev.current = majorTodos[index].color;
+                                                    console.log(prev.current);
+                                                    setTitle(item.title)
+                                                    if (view == -1) setView(index);
+                                                    else setView(-1);
+                                                }}
+                                            />)
+                                            : (<img src="/delete.png" className={`w-10 p-1 hover:opacity-80 rounded-full ${theme == "light" ? " invert-100 " : " invert-100 "}`}
                                                 onClick={async (e) => {
                                                     e.stopPropagation();
                                                     console.log(item);
                                                     await deleteTodo(item, index)
+                                                }} alt="" />)}
+                                        {view != index ?
+                                            (<img src="/person_add.svg" className={`w-10 p-1 hover:opacity-80 ${theme == "light" ? "  " : "  "}`}
+                                                onClick={async (e) => {
+                                                    e.stopPropagation();
+                                                    console.log(item);
+                                                    setInviteFlag(true);
+                                                    setUserIds(item?.team || []);
+                                                    setTodoId(item._id);
+                                                    setTitle(item.title);
                                                 }} alt="" />)
-                                            : (<img src="/color.png" className={`w-10 p-1 hover:bg-gray-900 rounded-full ${theme == "light" ? " invert-100 " : " invert-100 "} `} alt=""
+                                            : (<img src="/color.png" className={`w-10 p-1 hover:opacity-80 rounded-full ${theme == "light" ? " invert-100 " : " invert-100 "} `} alt=""
                                                 onClick={(e, index) => {
                                                     e.stopPropagation()
                                                     console.log(enableColor);
@@ -187,7 +203,7 @@ const MajorTodo = () => {
                                     {view != index ? (<div className='w-full md:w-65 font-bold pb-8 text-4xl varela-round-regular text-center'>
                                         <p>{item.title}</p>
                                     </div>)
-                                        : <input type="text" className='border-black w-full border-2 rounded-lg p-1' value={title} onClick={(e)=>{e.stopPropagation()}} onChange={(e) => {
+                                        : <input type="text" className='border-black w-full border-2 rounded-lg p-1' value={title} onClick={(e) => { e.stopPropagation() }} onChange={(e) => {
                                             e.stopPropagation()
                                             setTitle(e.target.value);
                                         }} />
@@ -199,8 +215,8 @@ const MajorTodo = () => {
                                         <p>Remaining: {item.total - item.completed}</p>
                                     </div>)
                                         : (<div className='w-full md:w-65 justify-around items-end flex text-center'>
-                                            <button type="button" className='p-1 w-24 rounded-2xl border-2 border-gray-400 bg-gray-300 hover:bg-gray-400 font-semibold' onClick={(e) => { e.stopPropagation();save(index) }}>Save</button>
-                                            <button type="button" className='p-1 w-24 rounded-2xl border-2 border-gray-400 bg-gray-300 hover:bg-gray-400 font-semibold' onClick={(e)=>{ e.stopPropagation();cancel(index) }}>Cancel</button>
+                                            <button type="button" className='p-1 w-24 rounded-2xl border-2 border-gray-400 bg-gray-300 hover:bg-gray-400 font-semibold' onClick={(e) => { e.stopPropagation(); save(index) }}>Save</button>
+                                            <button type="button" className='p-1 w-24 rounded-2xl border-2 border-gray-400 bg-gray-300 hover:bg-gray-400 font-semibold' onClick={(e) => { e.stopPropagation(); cancel(index) }}>Cancel</button>
                                         </div>)}
                                 </div>
                                 {
@@ -224,6 +240,14 @@ const MajorTodo = () => {
                     </div>
                 </div>
             </div>
+            {inviteFlag &&
+                <Invite
+                    userIds={userIds} 
+                    onClose={() => { setInviteFlag(false); setUserIds([]); setTodoId(""); setTitle(""); }} 
+                    todoId={todoId}
+                    title={title}
+                    inviteeName={user?.firstname + " " + user?.lastname}
+                    />}
         </>
     )
 }
