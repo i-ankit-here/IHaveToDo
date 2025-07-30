@@ -22,7 +22,7 @@ function Navbar() {
         credentials:"include"
       });
       if(response.ok){
-        setUser("");
+        setUser(null);
         setShow("");
         setView(false);
         navigate("/login");

@@ -10,12 +10,13 @@ import Todo from './components/todo';
 import getEnvironment from '../getEnvironment';
 import UpdateProfile from './components/Profile';
 import Home from './components/home';
+import InviteVerify from './components/inviteVerify';
 
 function App() {
   const apiURL = getEnvironment();
   const _theme = localStorage.getItem('theme');
   const [theme, setTheme] = useState(_theme ? _theme : "light")
-  const [user, setUser] = useState("")
+  const [user, setUser] = useState("loading")
 
   //fetching the user
   useEffect(() => {
@@ -30,6 +31,7 @@ function App() {
           console.log(response, data);
           setUser(data?.data?.user);
         } else {
+          setUser(null)
           throw new Error("Failed to fetch data")
         }
       } catch (error) {
@@ -47,21 +49,24 @@ function App() {
   // console.log(user);
 
   return (
-    <ThemeContext.Provider value={{ theme, setTheme, user: user, setUser }}>
-      <BrowserRouter>
-        <Navbar />
-        <Routes>
-          <Route path='/'>
-            <Route index element={<Home />} />
-            <Route path="dashboard" element={<MajorTodo />} />
-            <Route path='register' element={<Register />} />
-            <Route path='login' element={<Login />} />
-            <Route path='profile' element={<UpdateProfile />} />
-            <Route path='todos/:id' element={<Todo />}></Route>
-          </Route>
-        </Routes>
-      </BrowserRouter>
-    </ThemeContext.Provider>
+    (user != "loading") && (
+      <ThemeContext.Provider value={{ theme, setTheme, user: user, setUser }}>
+        <BrowserRouter>
+          <Navbar />
+          <Routes>
+            <Route path='/'>
+              <Route index element={<Home />} />
+              <Route path="dashboard" element={<MajorTodo />} />
+              <Route path='register' element={<Register />} />
+              <Route path='login' element={<Login />} />
+              <Route path='profile' element={<UpdateProfile />} />
+              <Route path='todos/:id' element={<Todo />}></Route>
+              <Route path='verify/:todoId/:token' element={<InviteVerify />}></Route>
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      </ThemeContext.Provider>
+    )
   )
 }
 
