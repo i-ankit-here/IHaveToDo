@@ -32,7 +32,7 @@ export const createInvite = async (req, res) => {
     const expiresAt = new Date(Date.now() + 48 * 60 * 60 * 1000);
 
     // Send the invitation email
-    await sendInvitationEmail(inviteeEmail, token, title, inviteeName);
+    await sendInvitationEmail(inviteeEmail, token, title, inviteeName, todoId);
 
     // Create a new invitation document
     const newInvite = new Invitation({
@@ -66,7 +66,6 @@ export const verifyInvite = async (req, res) => {
   try {
     // Find the invitation by token that is still pending
     const invite = await Invitation.findOne({ token, status: 'pending' });
-    console.log("Found invite:", invite);
 
     if (!invite) {
       return res.status(404).json({ message: 'Invalid or expired invitation token.' });
@@ -83,8 +82,8 @@ export const verifyInvite = async (req, res) => {
       await todoitem.save();
     }
     invite.status = 'accepted'; // Optionally update the status
-    await invite.save();
-    res.status(200).json({ email: invite.inviteeEmail });
+    const newInvite = await invite.save();
+    res.status(200).json({ email: newInvite.inviteeEmail, todoId: newInvite.todoId, message: 'Invitation verified successfully.' });
 
   } catch (error) {
     console.error('Error verifying invitation:', error);

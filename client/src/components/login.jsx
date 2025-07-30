@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react'
 import { useNavigate } from 'react-router-dom';
 import getEnvironment from '../../getEnvironment';
 import ThemeContext from '../themeContext';
+import { useSearchParams } from 'react-router-dom';
 
 
 const Login = () => {
@@ -13,6 +14,8 @@ const Login = () => {
     const [showSlider,setShowSlider] = useState(false)
 
     const {theme, setTheme,user,setUser} = useContext(ThemeContext);
+    const [searchParams] = useSearchParams();
+    const redirect = searchParams.get("redirect");
 
     const submit = async (event) => {
         try {
@@ -43,7 +46,8 @@ const Login = () => {
                 setUser(data?.data?.user);
                 info.style.color = theme=="light"?"green":"chartreuse";
                 info.innerText = "User logged in successfully "
-                Navigate("/dashboard");
+                if(redirect)Navigate(`/${redirect}`);
+                else Navigate("/dashboard");
             }
             else {
                 setShowSlider(false);
