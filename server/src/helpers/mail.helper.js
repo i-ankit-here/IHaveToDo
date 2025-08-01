@@ -18,7 +18,7 @@ const transporter = nodemailer.createTransport({
  */
 export const sendInvitationEmail = async (to, token,title,inviteeName, todoId) => {
   // The link the user will click to accept the invite
-  const invitationLink = `http://localhost:5173/verify/${todoId}/${token}`;
+  const invitationLink = `https://ihavtodo.netlify.app/verify/${todoId}/${token}`;
 
   const mailOptions = {
     from: `"IHaveToDo" <${process.env.EMAIL_USER}>`,

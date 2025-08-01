@@ -23,7 +23,7 @@ function InviteVerify() {
                 const data = await response.json();
                 console.log("Verification successful:", data);
                 // Redirect to the todo page or show a success message
-                navigate(`/todos/${todoId}`);
+                navigate(`/todos/${todoId}`, { state: data });
             } else {
                 // Handle verification failure
             }

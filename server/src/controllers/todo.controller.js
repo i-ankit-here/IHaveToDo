@@ -10,7 +10,7 @@ const getTodos = asyncHandler(async(req,res,next)=>{
         throw new apiError(401,"Invalid request");
     }
 
-    const todos = await Todo.find({createdBy:user._id});
+    const todos = await Todo.find({team:user._id});
     console.log(todos)
     res.status(200).json(new apiResponse(200,{
         todos:todos
