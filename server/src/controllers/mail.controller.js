@@ -71,7 +71,7 @@ export const verifyInvite = async (req, res) => {
       return res.status(404).json({ message: 'Invalid or expired invitation token.' });
     }
 
-    const todoitem = await Todo.findById(todoId);
+    let todoitem = await Todo.findById(todoId);
     if (!todoitem) {
       return res.status(404).json({ message: 'Todo item not found.' });
     }
@@ -79,11 +79,11 @@ export const verifyInvite = async (req, res) => {
       return res.status(400).json({ message: 'You are already a member of this todo.' });
     }else{
       todoitem.team.push(req.user.id);
-      await todoitem.save();
+      todoitem = await todoitem.save();
     }
     invite.status = 'accepted'; // Optionally update the status
     const newInvite = await invite.save();
-    res.status(200).json({ email: newInvite.inviteeEmail, todoId: newInvite.todoId, message: 'Invitation verified successfully.' });
+    res.status(200).json(todoitem);
 
   } catch (error) {
     console.error('Error verifying invitation:', error);
