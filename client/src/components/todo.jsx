@@ -3,11 +3,13 @@ import { useState, useEffect, useContext } from 'react';
 import ThemeContext from '../themeContext';
 import getEnvironment from '../../getEnvironment';
 import { useLocation } from 'react-router-dom';
+import io from 'socket.io-client';
 
 const Todo = () => {
 
     const { theme, setTheme } = useContext(ThemeContext);
     const apiURL = getEnvironment();
+    const socket = io(apiURL);
     const URI = window.location.href.split("/");
     const Id = URI[URI.length - 1];
     const prev = useRef({});
@@ -29,7 +31,6 @@ const Todo = () => {
                 if (response.ok) {
                     const data = await response.json();
                     console.log(data.data.data);
-
                     setTodos(data?.data?.data);
                 } else {
                     throw new Error("failed to fetch Todos");
@@ -39,6 +40,38 @@ const Todo = () => {
             }
         }
         fetchData();
+
+        // Listener for when a new task is added
+        const handleNewTodo = (newTodo) => {
+            setTodos((currentTodo) => [newTodo, ...currentTodo]);
+            setView(-1);
+        };
+        socket.on('subtodo_added', handleNewTodo);
+
+        // Listener for when a task is updated
+        const handleUpdatedTodo = (updatedTodo) => {
+            setTodos((currentTodo) =>
+                currentTodo.map((todo) => (todo._id === updatedTodo._id ? updatedTodo : todo))
+            );
+            setView(-1);
+        };
+        socket.on('subtodo_updated', handleUpdatedTodo);
+
+        // Listener for when a task is deleted
+        const handleDeletedTodo = (deletedTodo) => {
+            setTodos((currentTodo) =>
+                currentTodo.filter((todo) => todo._id !== deletedTodo._id)
+            );
+            setView(-1);
+        };
+        socket.on('subtodo_deleted', handleDeletedTodo);
+
+        // Clean up the listeners when the component unmounts (Important to avoid memory leaks)
+        return () => {
+            socket.off('subtodo_added', handleNewTodo);
+            socket.off('subtodo_deleted', handleDeletedTodo);
+            socket.off('subtodo_updated', handleUpdatedTodo);
+        };
     }, []);
 
     useEffect(() => {
@@ -52,6 +85,7 @@ const Todo = () => {
     //save or update a todo
     const save = async (index) => {
         try {
+            if(!todos[index]._id)setTodos((prevTodos) => prevTodos.filter((_, i) => i !== index));
             const todo = todos[index];
             todo.content = title;
             console.log(todo);
@@ -80,9 +114,9 @@ const Todo = () => {
                 })
                 if (response.ok) {
                     const data = await response.json();
-                    const arr = [...todos];
-                    arr[index] = data.data.data;
-                    setTodos(arr);
+                    // const arr = [...todos];
+                    // arr[index] = data.data.data;
+                    // setTodos(arr);
                 } else {
                     throw new Error("Error occured while saving todo");
                 }
@@ -107,10 +141,10 @@ const Todo = () => {
             })
             if (response.ok) {
                 const data = await response.json();
-                console.log(data);
-                const arr = [...todos];
-                arr.splice(index, 1);
-                setTodos(arr)
+                // console.log(data);
+                // const arr = [...todos];
+                // arr.splice(index, 1);
+                // setTodos(arr)
             } else {
                 throw new Error("Error occured while deleting todo");
             }
@@ -137,9 +171,9 @@ const Todo = () => {
             })
             if (response.ok) {
                 const data = await response.json();
-                arr[index].complete = todo.complete;
-                setTodos(arr);
-                console.log(data);
+                // arr[index].complete = todo.complete;
+                // setTodos(arr);
+                // console.log(data);
             } else {
                 throw new Error("Error occured while updating todo");
             }
@@ -174,7 +208,7 @@ const Todo = () => {
                 {
                     todos.length == 0 ?
                         <div className='mt-15 w-full ${theme=="light"?"":"text-white "}'>
-                            <div className={`pt-3 border-b-2 mx-8 ${theme=="light"?" border-neutral-400 ":" border-neutral-200 "}`}>
+                            <div className={`pt-3 border-b-2 mx-8 ${theme == "light" ? " border-neutral-400 " : " border-neutral-200 "}`}>
                                 <p className={`${theme == "light" ? "" : "text-zinc-100 "}text-5xl font-semibold font-sans`}>{`${state.title}`}</p>
                             </div>
                             <div className={`p-10 ${theme == "light" ? "" : "text-zinc-100 "} text-xl font-sans`}>
@@ -183,14 +217,14 @@ const Todo = () => {
                         </div>
                         :
                         <div className='mt-15 ${theme=="light"?"":"text-white"}'>
-                            <div className={`pt-3 border-b-2 mx-8 ${theme=="light"?" border-neutral-400 ":" border-neutral-200 "}`}>
+                            <div className={`pt-3 border-b-2 mx-8 ${theme == "light" ? " border-neutral-400 " : " border-neutral-200 "}`}>
                                 <p className={`${theme == "light" ? "" : "text-zinc-100 "}text-5xl font-semibold font-sans`}>{`${state.title}`}</p>
                             </div>
                             <div className='flex w-[72dvw] h-[84dvh] mt-3 flex-col items-start p-8 gap-3 overflow-y-scroll'>
                                 <div className='mt-6 mx-8 w-full'>
                                     <p className={`${theme == "light" ? " border-neutral-400 " : "text-zinc-100 border-neutral-200 "}text-4xl border-b-1 mr-6 font-semibold font-sans`}>{`${"Remaining"}`}</p>
                                 </div>
-                                {pending == 0 ? 
+                                {pending == 0 ?
                                     <div className={`pl-12 pt-2 ${theme == "light" ? " border-neutral-400 " : "text-zinc-100 "}text-xl font-sans`}>No remaining task</div>
                                     :
                                     <div className='cards flex-col w-full p-2 gap-3'>
@@ -250,33 +284,33 @@ const Todo = () => {
                                 <div className='mt-6 mx-8 w-full'>
                                     <p className={`${theme == "light" ? " border-neutral-400 " : "text-zinc-100 "}text-4xl border-b-1 mr-6 font-semibold font-sans`}>{`${"Completed"}`}</p>
                                 </div>
-                                {pending==todos.length?
-                                <div className={`pl-12 pt-2 ${theme == "light" ? "" : "text-zinc-100 "}text-xl font-sans`}>No Completed task</div>
-                                :
-                                <div className='cards flex-col p-2 w-full gap-3'>
-                                {todos.map((item, index) => {
-                                    return item.complete ? <div key={index} className='flex gap-2 m-2 w-full items-center'>
-                                        <img src="/chk_green.svg" alt="" className={`h-7 w-7 ${theme == "light" ? "" : ""} cursor-pointer`}
-                                            onClick={(e) => {
-                                                e.stopPropagation();
-                                                toggleTodo(index);
-                                            }}
-                                        />
-                                        <div className={`flex rounded-sm p-2 w-full justify-between items-center ${theme == "light" ? "bg-green-300" : "bg-neutral-700 text-white"}`}>
-                                            <p>{item.content}</p>
-                                            <div className='flex gap-2'>
-                                                <img src="/delete.png" alt="" className={`h-7 cursor-pointer ${theme == "light" ? "invert-100" : ""}`}
+                                {pending == todos.length ?
+                                    <div className={`pl-12 pt-2 ${theme == "light" ? "" : "text-zinc-100 "}text-xl font-sans`}>No Completed task</div>
+                                    :
+                                    <div className='cards flex-col p-2 w-full gap-3'>
+                                        {todos.map((item, index) => {
+                                            return item.complete ? <div key={index} className='flex gap-2 m-2 w-full items-center'>
+                                                <img src="/chk_green.svg" alt="" className={`h-7 w-7 ${theme == "light" ? "" : ""} cursor-pointer`}
                                                     onClick={(e) => {
                                                         e.stopPropagation();
-                                                        deleteTodo(index);
+                                                        toggleTodo(index);
                                                     }}
                                                 />
-                                            </div>
-                                        </div>
-                                    </div> : ""
-                                })}
-                                <div className='h-20'></div>
-                            </div>
+                                                <div className={`flex rounded-sm p-2 w-full justify-between items-center ${theme == "light" ? "bg-green-300" : "bg-neutral-700 text-white"}`}>
+                                                    <p>{item.content}</p>
+                                                    <div className='flex gap-2'>
+                                                        <img src="/delete.png" alt="" className={`h-7 cursor-pointer ${theme == "light" ? "invert-100" : ""}`}
+                                                            onClick={(e) => {
+                                                                e.stopPropagation();
+                                                                deleteTodo(index);
+                                                            }}
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </div> : ""
+                                        })}
+                                        <div className='h-20'></div>
+                                    </div>
                                 }
                             </div>
                         </div>
