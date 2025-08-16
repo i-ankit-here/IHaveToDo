@@ -20,7 +20,7 @@ const getSubTodos = asyncHandler(async (req, res, next) => {
 });
 
 const addSubTodo = asyncHandler(async (req, res, next) => {
-    const { content, MajorTodoId } = req.body;
+    const { status,content, MajorTodoId , assignedTo, deadline} = req.body;
 
     if (!content || !MajorTodoId) {
         throw new apiError(401, "Provide subtodo content and majorTodoId");
@@ -30,8 +30,11 @@ const addSubTodo = asyncHandler(async (req, res, next) => {
     const createdSubTodo = await subTodo.create({
         content: content,
         parent: MajorTodoId,
-        complete: false,
-        createdBy: req.user?._id
+        status: status,
+        createdBy: req.user?._id,
+        notes:[],
+        assignedTo:assignedTo,
+        deadline:deadline
     });
 
     if (!createdSubTodo) {
@@ -60,6 +63,7 @@ const addSubTodo = asyncHandler(async (req, res, next) => {
 const deleteSubTodo = asyncHandler(async (req, res, next) => {
     try {
         const { id } = req.body;
+        console.log(id)
         if (!id){ throw new apiError(401, "Provide Id of the todo to be deleted"); }
         const subtodo = await subTodo.findById(id);
         const deletedSubTodo = await subTodo.deleteOne({ _id: id });
@@ -82,10 +86,12 @@ const deleteSubTodo = asyncHandler(async (req, res, next) => {
         throw new apiError(500, "Error occured while deleting the todo from the database");
     }
 });
+
+
 const updateSubTodo = asyncHandler(async (req, res, next) => {
     try {
-        const { _id, content, status } = req.body;
-        console.log(req.body);
+        const { _id, content, status , assignedTo, deadline } = req.body;
+    
         if (!_id || !content) throw new apiError(401, "provide subtodo content and majorTodoId to create a new todo");
         const existing = await subTodo.findById(_id);
         const prev = existing.status;
@@ -93,6 +99,8 @@ const updateSubTodo = asyncHandler(async (req, res, next) => {
         if (!existing) throw new apiError(500, "subtodo with given id does not exists");
         existing.content = content;
         existing.status = status;
+        existing.assignedTo = assignedTo;
+        existing.deadline = deadline;
         // console.log(existing);
         const updated = await existing.save();
         if (nxt != prev) {
@@ -105,9 +113,7 @@ const updateSubTodo = asyncHandler(async (req, res, next) => {
             if (nxt === "completed") { majorTodo.completed += 1; }
             await majorTodo.save();
         }
-        console.log(req.io)
         req.io.emit('subtodo_updated', updated);
-        console.log("Emitted subtodo_updated",updated);
         res.status(200).json(new apiResponse(200, {
             data: existing
         }, "Todo updated successfully"))
@@ -117,4 +123,23 @@ const updateSubTodo = asyncHandler(async (req, res, next) => {
     }
 });
 
-export { getSubTodos, addSubTodo, deleteSubTodo, updateSubTodo };
+
+const setNotes = asyncHandler(async (req, res, next) => {
+    try {
+        const { _id, notes } = req.body;
+        console.log(_id,notes)
+        if (!_id || !notes) throw new apiError(401, "provide notes and subTodo id to update notes");
+        const existing = await subTodo.findById(_id);
+        if(!existing)throw new apiError(401,"Wrong subTodo Id")
+        existing.notes = notes;
+        const updated = await existing.save();
+        res.status(200).json(new apiResponse(200, {
+            data: existing
+        }, "Todo updated successfully"))
+
+    } catch (error) {
+        throw new apiError(500, "Error occured while updating the todo into database");
+    }
+});
+
+export { getSubTodos, addSubTodo, deleteSubTodo, updateSubTodo, setNotes };
