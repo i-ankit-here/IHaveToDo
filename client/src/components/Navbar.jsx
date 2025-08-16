@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import ThemeContext from './../themeContext';
+import ThemeContext from '../themeContext';
 import { useNavigate } from 'react-router-dom';
 import getEnvironment from '../../getEnvironment';
 

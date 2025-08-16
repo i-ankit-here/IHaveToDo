@@ -1,3 +1,4 @@
+import { User } from "../models/user.model.js";
 import {Todo} from "../models/todo.models.js"
 import { apiError } from "../utils/apiError.js";
 import apiResponse from "../utils/apiResponse.js";
@@ -65,4 +66,24 @@ const deleteTodo = asyncHandler(async(req,res,next)=>{
     },"Todo deleted successfully"));
 })
 
-export {getTodos,addTodo,deleteTodo};
+const getTeam = asyncHandler(async(req,res,next)=>{
+    const {id} = req.params;
+    if(!id){
+        throw new apiError(401,"Please provide the Todo Id");
+    }
+    const todo = await Todo.findById(id);
+    if(!todo)throw new apiError(401,"Invalid Todo Id")
+    const users = todo.team;
+    const Team = [];
+    for(let i = 0;i<users.length;i++){
+        const id = users[i];
+        const user = await User.findById(id).select("-password -refreshToken");
+        if(user)Team.push(user);
+        else continue;
+    }
+    res.status(200).json(new apiResponse(200,{
+        team:Team
+    },"Team sent successfully"));
+})
+
+export {getTodos,addTodo,deleteTodo,getTeam};
