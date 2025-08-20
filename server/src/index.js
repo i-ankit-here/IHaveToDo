@@ -8,6 +8,8 @@ import userRouter from "./routes/user.routes.js";
 import todoRoutes from "./routes/todo.routes.js"
 import subTodoRoutes from "./routes/subTodo.routes.js"
 import inviteRoutes from "./routes/invite.routes.js";
+import googleAuthRoutes from "./routes/googleAuth.routes.js";
+import calendarRoutes from "./routes/calendar.routes.js";
 
 connectDB()
     .then(() => {
@@ -50,6 +52,8 @@ connectDB()
         app.use("/api/v1/todos", todoRoutes);
         app.use("/api/v1/subTodos", subTodoRoutes);
         app.use("/api/v1/invite", inviteRoutes);
+        app.use("/api/v1/auth/google", googleAuthRoutes);
+        app.use("/api/v1/calendar", calendarRoutes);
 
         // This error listener for the app is still good to have
         app.on("error", (error) => {

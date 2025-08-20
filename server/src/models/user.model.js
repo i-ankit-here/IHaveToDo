@@ -29,6 +29,18 @@ const userSchema = new mongoose.Schema(
             type: String,
             default: ""
         },
+        googleId: { 
+            type: String,
+            default: ""
+        },
+        googleAccessToken: { 
+            type: String,
+            default: ""
+        },
+        googleRefreshToken: {
+            type: String,
+            default: ""    
+        },
         avatar : String,
         refreshToken : String
     },
