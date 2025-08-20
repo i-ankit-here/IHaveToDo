@@ -9,8 +9,8 @@ const router = express.Router();
 router.get('/events', verifyJWT, getAuthenticatedClient, getEvents);
 
 // Example: Create an event (a new "ToDo")
-router.post('/events', verifyJWT, getAuthenticatedClient, setEvent);
+// router.post('/events', verifyJWT, getAuthenticatedClient, setEvent);
 
-router.delete('/events', verifyJWT, getAuthenticatedClient, deleteEvent);
+// router.delete('/events', verifyJWT, getAuthenticatedClient, deleteEvent);
 
 export default router;

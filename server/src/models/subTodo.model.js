@@ -32,6 +32,10 @@ const subTodoSchema = new mongoose.Schema({
             type:Date
         }
     }],
+    eventId: {
+        type: String,
+        default: null
+    },
     createdBy: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"

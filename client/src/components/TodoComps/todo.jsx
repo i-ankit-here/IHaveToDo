@@ -36,8 +36,9 @@ function Todo({ todos, setTodos, item, index, TodoId, reqstatus, users }) {
             todo.content = title;
             todo.status = status;
             todo.assignedTo = assignedUsers
-
+            
             if (deadline && deadlineTime) {
+                console.log("Setting deadline:", { deadline, deadlineTime });
                 todo.deadline = new Date(`${deadline}T${deadlineTime}`).toISOString();
             } else if (deadline) {
                 todo.deadline = new Date(deadline).toISOString();

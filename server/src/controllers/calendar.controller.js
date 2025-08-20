@@ -43,9 +43,8 @@ const setEvent = asyncHandler(async (req, res) => {
             calendarId: 'primary',
             resource: event,
         });
-        res.status(201).json({
-            createdEvent: createdEvent.data
-        });
+
+        return createdEvent.data;
     } catch (error) {
         console.error('Error creating event', error);
         res.status(500).send('Error creating event');
@@ -53,11 +52,38 @@ const setEvent = asyncHandler(async (req, res) => {
 });
 
 
+const updateEvent = asyncHandler(async (req, res) => {
+    const { summary, description, startDateTime, endDateTime, eventId } = req.body;
+    console.log("Update Event Details:", { summary, description, startDateTime, endDateTime, eventId });
+    const event = {
+        summary: summary,
+        description: description,
+        start: {
+            dateTime: startDateTime, // e.g., '2025-08-28T09:00:00-07:00'
+            timeZone: 'Asia/Kolkata',
+        },
+        end: {
+            dateTime: endDateTime,
+            timeZone: 'Asia/Kolkata',
+        },
+    };
+
+    const calendar = google.calendar({ version: 'v3', auth: req.googleClient });
+
+    const response = await calendar.events.update({
+        calendarId: 'primary',
+        eventId: eventId,
+        resource: event,
+    });
+
+    return response.data;
+});
+
 const deleteEvent = asyncHandler(async (req, res) => {
     const { eventId } = req.body;
 
     if (!eventId) {
-        throw new apiError(400, "Event ID is required");
+        return false;
     }
 
     const calendar = google.calendar({ version: 'v3', auth: req.googleClient });
@@ -66,7 +92,8 @@ const deleteEvent = asyncHandler(async (req, res) => {
         calendarId: 'primary',
         eventId: eventId,
     });
-    res.status(200).json(new apiResponse(200, { message: 'Event deleted successfully' }));
+    console.log("Event deleted successfully:", eventId);
+    return true;
 });
 
-export { getEvents, setEvent, deleteEvent };
+export { getEvents, setEvent, deleteEvent, updateEvent };
