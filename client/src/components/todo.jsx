@@ -26,17 +26,17 @@ const Todo = () => {
     const URI = window.location.href.split("/");
     const Id = URI[URI.length - 1];
     const [todos, setTodos] = useState([]);
-    const [team,setTeam] = useState([]);
-    
-    
-    
+    const [team, setTeam] = useState([]);
+
+
+
     // Collapsible sections state
     const [collapsedSections, setCollapsedSections] = useState({
         pending: false,
         'in-progress': false,
         completed: false
     });
-    
+
     const location = useLocation();
     const state = location.state;
 
@@ -71,10 +71,10 @@ const Todo = () => {
                     method: "GET",
                     credentials: "include"
                 });
-                if(response.ok){
+                if (response.ok) {
                     const data = await response.json();
                     setTeam(data.data.team);
-                }else{
+                } else {
                     throw new Error(response.message);
                 }
             } catch (error) {
@@ -84,7 +84,7 @@ const Todo = () => {
         fetchData();
         fetchTeam();
         const handleNewTodo = (newTodo) => {
-            setTodos((currentTodo) => [ ...currentTodo,newTodo]);
+            setTodos((currentTodo) => [...currentTodo, newTodo]);
         };
         socketRef.current.on('subtodo_added', handleNewTodo);
 
@@ -126,16 +126,16 @@ const Todo = () => {
         return format(date, 'MMM dd, yyyy HH:mm');
     };
 
-    
 
-    
+
+
 
     // Collapsible Section Component
     const CollapsibleSection = ({ title, status, count, icon, children, isEmpty = false }) => {
         const isCollapsed = collapsedSections[status];
-        
+
         const getSectionColors = () => {
-            switch(status) {
+            switch (status) {
                 case 'pending':
                     return {
                         bg: theme === 'light' ? 'bg-yellow-50' : 'bg-yellow-900/10',
@@ -171,7 +171,7 @@ const Todo = () => {
 
         return (
             <Card className={`mb-6 overflow-hidden transition-all duration-300 ${colors.bg} ${colors.border} border-2`}>
-                <CardHeader 
+                <CardHeader
                     className={`p-4 cursor-pointer hover:opacity-80 transition-opacity ${colors.bg}`}
                     onClick={() => toggleSection(status)}
                 >
@@ -192,7 +192,7 @@ const Todo = () => {
                         </div>
                     </div>
                 </CardHeader>
-                
+
                 <div className={`transition-all duration-300 overflow-hidden ${isCollapsed ? 'max-h-0' : 'max-h-none'}`}>
                     <CardContent className="p-4 pt-0">
                         {isEmpty ? (
@@ -226,7 +226,7 @@ const Todo = () => {
                             <h2 className={`text-xl font-bold ${theme == "light" ? "text-neutral-700" : "text-neutral-200"}`}>Task Overview</h2>
                             <Separator className={`mt-3 ${theme == "light" ? "bg-gray-300" : "bg-neutral-600"}`} />
                         </div>
-                        
+
                         <div className='space-y-4'>
                             <Card className={`p-4 ${theme == "light" ? "bg-yellow-100 border-yellow-300" : "bg-yellow-900/30 border-yellow-700"} transition-all hover:shadow-md`}>
                                 <div className='flex justify-between items-center'>
@@ -239,7 +239,7 @@ const Todo = () => {
                                     </Badge>
                                 </div>
                             </Card>
-                            
+
                             <Card className={`p-4 ${theme == "light" ? "bg-blue-100 border-blue-300" : "bg-blue-900/30 border-blue-700"} transition-all hover:shadow-md`}>
                                 <div className='flex justify-between items-center'>
                                     <div className='flex items-center gap-3'>
@@ -251,7 +251,7 @@ const Todo = () => {
                                     </Badge>
                                 </div>
                             </Card>
-                            
+
                             <Card className={`p-4 ${theme == "light" ? "bg-green-100 border-green-300" : "bg-green-900/30 border-green-700"} transition-all hover:shadow-md`}>
                                 <div className='flex justify-between items-center'>
                                     <div className='flex items-center gap-3'>
@@ -264,7 +264,7 @@ const Todo = () => {
                                 </div>
                             </Card>
                         </div>
-                        
+
                         {/* Quick Actions */}
                         <div className="mt-8">
                             <h3 className={`text-lg font-semibold mb-4 ${theme === 'light' ? 'text-gray-700' : 'text-gray-300'}`}>
@@ -327,7 +327,7 @@ const Todo = () => {
                                 Manage your tasks efficiently
                             </p>
                         </div>
-                        
+
                         <div className='flex-1 p-6 overflow-y-auto'>
                             {/* Collapsible Sections */}
                             <CollapsibleSection
@@ -338,14 +338,14 @@ const Todo = () => {
                                 isEmpty={pendingTodos.length === 0}
                             >
                                 {todos.map((item, index) => <SubTodo
-                                todos = {todos} 
-                                setTodos = {setTodos}
-                                item = {item}
-                                index = {index}
-                                TodoId = {Id}
-                                reqstatus = "pending"
-                                key={item._id}
-                                users = {team}
+                                    todos={todos}
+                                    setTodos={setTodos}
+                                    item={item}
+                                    index={index}
+                                    TodoId={Id}
+                                    reqstatus="pending"
+                                    key={item._id}
+                                    users={team}
                                 />)}
                             </CollapsibleSection>
 
@@ -357,14 +357,14 @@ const Todo = () => {
                                 isEmpty={inProgressTodos.length === 0}
                             >
                                 {todos.map((item, index) => <SubTodo
-                                todos = {todos} 
-                                setTodos = {setTodos}
-                                item = {todos[index]}
-                                index = {index}
-                                TodoId = {Id}
-                                reqstatus = "in-progress"
-                                key={item._id}
-                                users = {team}
+                                    todos={todos}
+                                    setTodos={setTodos}
+                                    item={todos[index]}
+                                    index={index}
+                                    TodoId={Id}
+                                    reqstatus="in-progress"
+                                    key={item._id}
+                                    users={team}
                                 />)}
                             </CollapsibleSection>
 
@@ -376,14 +376,14 @@ const Todo = () => {
                                 isEmpty={completedTodos.length === 0}
                             >
                                 {todos.map((item, index) => <SubTodo
-                                todos = {todos} 
-                                setTodos = {setTodos}
-                                item = {todos[index]}
-                                index = {index}
-                                TodoId = {Id}
-                                reqstatus = "completed"
-                                key={item._id}
-                                users = {team}
+                                    todos={todos}
+                                    setTodos={setTodos}
+                                    item={todos[index]}
+                                    index={index}
+                                    TodoId={Id}
+                                    reqstatus="completed"
+                                    key={item._id}
+                                    users={team}
                                 />)}
                             </CollapsibleSection>
 
@@ -394,11 +394,11 @@ const Todo = () => {
             </div>
 
             {/* Enhanced Floating Add Button */}
-            <Button 
+            <Button
                 className={`fixed bottom-8 right-8 ${theme == "light" ? "bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700" : "bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800"} rounded-full shadow-lg hover:shadow-xl transition-all duration-200 p-0 h-16 w-16`}
                 onClick={(e) => {
                     e.stopPropagation();
-                    if(todos.some((item)=>item._id === 0))return;
+                    if (todos.some((item) => item._id === 0)) return;
                     const todo = {
                         _id: 0,
                         content: "",

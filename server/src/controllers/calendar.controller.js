@@ -20,7 +20,7 @@ const getEvents = asyncHandler(async (req, res) => {
 });
 
 const setEvent = asyncHandler(async (req, res) => {
-    const { summary, description, startDateTime, endDateTime } = req.body;
+    const { summary, description, startDateTime, endDateTime, attendees } = req.body;
     console.log(req.body);
     console.log("Event Details:", { summary, description, startDateTime, endDateTime });
 
@@ -36,12 +36,14 @@ const setEvent = asyncHandler(async (req, res) => {
             dateTime: endDateTime,
             timeZone: 'Asia/Kolkata',
         },
+        attendees: attendees,
     };
 
     try {
         const createdEvent = await calendar.events.insert({
             calendarId: 'primary',
             resource: event,
+            sendNotifications: true,
         });
 
         return createdEvent.data;
@@ -53,8 +55,8 @@ const setEvent = asyncHandler(async (req, res) => {
 
 
 const updateEvent = asyncHandler(async (req, res) => {
-    const { summary, description, startDateTime, endDateTime, eventId } = req.body;
-    console.log("Update Event Details:", { summary, description, startDateTime, endDateTime, eventId });
+    const { summary, description, startDateTime, endDateTime, eventId, attendees } = req.body;
+    console.log("Update Event Details:", { summary, description, startDateTime, endDateTime, eventId, attendees });
     const event = {
         summary: summary,
         description: description,
@@ -66,6 +68,7 @@ const updateEvent = asyncHandler(async (req, res) => {
             dateTime: endDateTime,
             timeZone: 'Asia/Kolkata',
         },
+        attendees: attendees,
     };
 
     const calendar = google.calendar({ version: 'v3', auth: req.googleClient });
@@ -74,6 +77,7 @@ const updateEvent = asyncHandler(async (req, res) => {
         calendarId: 'primary',
         eventId: eventId,
         resource: event,
+        sendNotifications: true,
     });
 
     return response.data;
@@ -91,6 +95,7 @@ const deleteEvent = asyncHandler(async (req, res) => {
     await calendar.events.delete({
         calendarId: 'primary',
         eventId: eventId,
+        sendNotifications: true,
     });
     console.log("Event deleted successfully:", eventId);
     return true;

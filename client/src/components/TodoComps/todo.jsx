@@ -36,7 +36,9 @@ function Todo({ todos, setTodos, item, index, TodoId, reqstatus, users }) {
             todo.content = title;
             todo.status = status;
             todo.assignedTo = assignedUsers
-            
+            const attendees = assignedUsers.map(id => {return {email: users.find(user => user._id === id)?.email}});
+            console.log(attendees);
+
             if (deadline && deadlineTime) {
                 console.log("Setting deadline:", { deadline, deadlineTime });
                 todo.deadline = new Date(`${deadline}T${deadlineTime}`).toISOString();
@@ -44,6 +46,7 @@ function Todo({ todos, setTodos, item, index, TodoId, reqstatus, users }) {
                 todo.deadline = new Date(deadline).toISOString();
             }
 
+            todo.attendees = attendees;
 
             if (todo._id !== 0) {
                 const response = await fetch(`${apiURL}/api/v1/subTodos/updateSubTodo`, {
