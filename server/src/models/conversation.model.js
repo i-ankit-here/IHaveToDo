@@ -1,6 +1,10 @@
 const mongoose = require('mongoose');
 
 const conversationSchema = new mongoose.Schema({
+  projectId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Todo'
+  },
   participants: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User'
