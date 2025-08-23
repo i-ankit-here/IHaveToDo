@@ -1,5 +1,6 @@
 import { User } from "../models/user.model.js";
 import { Conversation } from "../models/conversation.model.js";
+import { Message } from "../models/message.model.js";
 import {Todo} from "../models/todo.models.js"
 import { apiError } from "../utils/apiError.js";
 import apiResponse from "../utils/apiResponse.js";
