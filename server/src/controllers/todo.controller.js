@@ -1,4 +1,5 @@
 import { User } from "../models/user.model.js";
+import { Conversation } from "../models/conversation.model.js";
 import {Todo} from "../models/todo.models.js"
 import { apiError } from "../utils/apiError.js";
 import apiResponse from "../utils/apiResponse.js";
@@ -49,6 +50,28 @@ const addTodo = asyncHandler(async(req,res,next)=>{
             completed:completed||0,
             team:[user._id]
         })
+
+        const createdGroupConversation = await Conversation.create({
+            projectId: createdTodo._id,
+            participants: [user._id],
+            isGroupChat: true,
+            groupName: "Project Group Chat",
+            groupAdmin: user._id
+        });
+
+        const createdMessage = await Message.create({
+            sender: user._id,
+            content: `New task created: ${title}`,
+            conversation: createdGroupConversation._id
+        });
+
+        const createdConversation = await Conversation.create({
+            projectId: createdTodo._id,
+            participants: [user._id,user._id],
+            isGroupChat: false,
+            groupName: "You",
+        });
+
         res.status(200).json(new apiResponse(200,{
             createdTodo:createdTodo
         },"Todo created Successfully"));
