@@ -2,6 +2,7 @@ import crypto from 'crypto';
 import Invitation from '../models/Invitation.model.js';
 import { sendInvitationEmail } from '../helpers/mail.helper.js';
 import { Todo } from '../models/todo.models.js';
+import { Conversation } from '../models/conversation.model.js';
 
 /**
  * @desc    Create and send a new invitation
@@ -75,11 +76,27 @@ export const verifyInvite = async (req, res) => {
     if (!todoitem) {
       return res.status(404).json({ message: 'Todo item not found.' });
     }
-    if(todoitem.team.includes(req.user.id)){
+    if(todoitem.team.includes(req.user._id)){
       return res.status(400).json({ message: 'You are already a member of this todo.' });
     }else{
-      todoitem.team.push(req.user.id);
+      todoitem.team.push(req.user._id);
       todoitem = await todoitem.save();
+
+      //Adding user to group Conversation
+      const groupConversation = await Conversation.findOne({ $and : [{projectId: todoitem._id },{isGroupChat: true}] });
+      groupConversation.participants.push(req.user._id);
+      await groupConversation.save();
+
+      for(let i=0;i<todoitem.team.length;i++){
+        const id = todoitem.team[i];
+        //Creating individual conversations
+        const newConversation = await Conversation.create({
+          projectId: todoitem._id,
+          participants: [id,req.user._id],
+          isGroupChat: false,
+          groupName: "You",
+        });
+      }
     }
     invite.status = 'accepted'; // Optionally update the status
     const newInvite = await invite.save();
