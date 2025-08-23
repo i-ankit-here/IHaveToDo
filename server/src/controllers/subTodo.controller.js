@@ -22,6 +22,7 @@ const getSubTodos = asyncHandler(async (req, res, next) => {
 
 const addSubTodo = asyncHandler(async (req, res, next) => {
     const { status,content, MajorTodoId , assignedTo, deadline} = req.body;
+    console.log(req.body);
     let createdEvent = null;
     if(deadline){
         req.body.description = content;
@@ -30,9 +31,7 @@ const addSubTodo = asyncHandler(async (req, res, next) => {
         req.body.endDateTime = deadline;
         createdEvent = await setEvent(req, res);
     }
-    if(!createdEvent){
-        throw new apiError(500, "Error while creating event for subTodo");
-    }
+    
     if (!content || !MajorTodoId) {
         throw new apiError(401, "Provide subtodo content and majorTodoId");
     }
@@ -114,7 +113,6 @@ const updateSubTodo = asyncHandler(async (req, res, next) => {
         if (!existing) {
             throw new apiError(500, "subtodo with given id does not exists");
         }
-
         if(existing.eventId && deadline){
             req.body.summary = content;
             req.body.description = content;
@@ -126,6 +124,13 @@ const updateSubTodo = asyncHandler(async (req, res, next) => {
                 throw new apiError(500, "Error while updating event for subTodo");
             }
             existing.eventId = updatedEvent.id;
+        }
+        if(!existing.eventId && deadline){
+            req.body.description = content;
+            req.body.summary = content;
+            req.body.startDateTime = deadline;
+            req.body.endDateTime = deadline;
+            existing.eventId = await setEvent(req, res);
         }
         const prev = existing.status;
         const nxt = status;

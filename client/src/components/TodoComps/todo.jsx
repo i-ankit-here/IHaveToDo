@@ -137,11 +137,11 @@ function Todo({ todos, setTodos, item, index, TodoId, reqstatus, users }) {
         const getStatusIcon = (status) => {
             switch (status) {
                 case 'pending':
-                    return <Circle className="h-6 w-6 text-yellow-500 fill-yellow-500" />;
+                    return <Circle className="h-6 w-6 text-yellow-700 " />;
                 case 'in-progress':
-                    return <Play className="h-6 w-6 text-blue-500 fill-blue-500" />;
+                    return <Play className="h-6 w-6 text-blue-700 " />;
                 case 'completed':
-                    return <CheckCircle className="h-6 w-6 text-green-500 fill-green-500" />;
+                    return <CheckCircle className="h-6 w-6 text-green-700 " />;
                 default:
                     return <Circle className="h-6 w-6 text-gray-500" />;
             }
@@ -164,21 +164,21 @@ function Todo({ todos, setTodos, item, index, TodoId, reqstatus, users }) {
                             className={`flex items-center gap-3 p-2 rounded cursor-pointer hover:${theme === 'light' ? 'bg-gray-100' : 'bg-neutral-700'} transition-colors`}
                             onClick={() => onStatusChange('pending')}
                         >
-                            <Circle className="h-5 w-5 text-yellow-500 fill-yellow-500" />
+                            <Circle className="h-5 w-5 text-yellow-500" />
                             <span className={theme === 'light' ? 'text-gray-900' : 'text-gray-100'}>Pending</span>
                         </div>
                         <div
                             className={`flex items-center gap-3 p-2 rounded cursor-pointer hover:${theme === 'light' ? 'bg-gray-100' : 'bg-neutral-700'} transition-colors`}
                             onClick={() => onStatusChange('in-progress')}
                         >
-                            <Play className="h-5 w-5 text-blue-500 fill-blue-500" />
+                            <Play className="h-5 w-5 text-blue-500" />
                             <span className={theme === 'light' ? 'text-gray-900' : 'text-gray-100'}>In Progress</span>
                         </div>
                         <div
                             className={`flex items-center gap-3 p-2 rounded cursor-pointer hover:${theme === 'light' ? 'bg-gray-100' : 'bg-neutral-700'} transition-colors`}
                             onClick={() => onStatusChange('completed')}
                         >
-                            <CheckCircle className="h-5 w-5 text-green-500 fill-green-500" />
+                            <CheckCircle className="h-5 w-5 text-green-500" />
                             <span className={theme === 'light' ? 'text-gray-900' : 'text-gray-100'}>Completed</span>
                         </div>
                     </div>
@@ -203,9 +203,9 @@ function Todo({ todos, setTodos, item, index, TodoId, reqstatus, users }) {
 
     const getStatusColor = (status) => {
         switch (status) {
-            case 'pending': return theme === 'light' ? 'bg-yellow-50 border-yellow-200' : 'bg-yellow-900/20 border-yellow-600';
-            case 'in-progress': return theme === 'light' ? 'bg-blue-50 border-blue-200' : 'bg-blue-900/20 border-blue-600';
-            case 'completed': return theme === 'light' ? 'bg-green-50 border-green-200' : 'bg-green-900/20 border-green-600';
+            case 'pending': return theme === 'light' ? 'bg-yellow-200 border-yellow-300 shadow-sm' : 'bg-yellow-900/20 border-yellow-600';
+            case 'in-progress': return theme === 'light' ? 'bg-blue-200 border-blue-300 shadow-sm' : 'bg-blue-900/20 border-blue-600';
+            case 'completed': return theme === 'light' ? 'bg-green-200 border-green-300 shadow-sm' : 'bg-green-900/20 border-green-600';
             default: return theme === 'light' ? 'bg-gray-50 border-gray-200' : 'bg-gray-900/20 border-gray-600';
         }
     };
@@ -223,9 +223,9 @@ function Todo({ todos, setTodos, item, index, TodoId, reqstatus, users }) {
 
     return (
         <>
-            <Card key={item._id} className={`mb-3 overflow-hidden transition-all duration-200 hover:shadow-md ${getStatusColor(item.status)}`}>
-                <CardContent className="p-0">
-                    <div className='flex gap-3 p-4 items-start'>
+            <Card key={item._id} className={`mb-3 pt-3 pb-3 overflow-hidden transition-all duration-200 hover:shadow-md ${getStatusColor(item.status)}`}>
+                <CardContent className={"p-0"}>
+                    <div className='flex gap-3 pl-4 pr-4 items-start'>
                         {/* Status Icon */}
                         <div className='flex flex-col gap-1 mt-1'>
                             <StatusIcon
@@ -265,12 +265,6 @@ function Todo({ todos, setTodos, item, index, TodoId, reqstatus, users }) {
                                                     <span>{item.notes.length} note{item.notes.length > 1 ? 's' : ''}</span>
                                                 </div>
                                             )}
-                                        </div>
-
-                                        <div className="mt-3 flex items-center gap-2">
-                                            <Badge variant="secondary" className='text-xs'>
-                                                {item.status.replace('-', ' ')}
-                                            </Badge>
                                         </div>
                                     </div>
 
@@ -321,7 +315,7 @@ function Todo({ todos, setTodos, item, index, TodoId, reqstatus, users }) {
                             </div>
                         ) : (
                             <div className="flex-1">
-                                <div className='space-y-4'>
+                                <div className='space-y-2'>
                                     {/* Title Input */}
                                     <div>
                                         <label id="label_for_titlee" htmlFor="title" className={`block text-sm font-medium mb-2 ${theme === 'light' ? 'text-gray-700' : 'text-gray-300'}`}>
