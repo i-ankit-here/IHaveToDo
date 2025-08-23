@@ -1,7 +1,7 @@
 import 'dotenv/config'
 import connectDB from "./db/db.js"
 import app from './app.js';
-import http from 'http'; 
+import http from 'http';
 import { Server } from 'socket.io';
 //importing routes
 import userRouter from "./routes/user.routes.js";
@@ -41,7 +41,32 @@ connectDB()
         // Set up the main listener for new socket connections
         io.on("connection", (socket) => {
             console.log(`✅ User connected: ${socket.id}`);
+            
+            // Listener for joining a project's group chat
+            socket.on('joinProjectRoom', (projectId) => {
+                const roomName = `project-${projectId}`;
+                socket.join(roomName);
+                console.log(`User ${socket.id} joined project room: ${roomName}`);
+            });
 
+            // Listener for starting/joining a private chat
+            socket.on('joinPrivateChat', (recipientId) => {
+                const senderId = socket.userId;
+                const roomName = [senderId, recipientId].sort().join('-');
+                socket.join(`private-${roomName}`);
+                console.log(`User ${socket.id} joined private chat: private-${roomName}`);
+            });
+
+            // Listener for sending any message
+            // The client will tell us which room to send the message to
+            socket.on('sendMessage', ({ room, message, sender }) => {
+                // Broadcast the message to all clients in the specified room
+                io.to(room).emit('receiveMessage', {
+                    message,
+                    sender,
+                    timestamp: new Date(),
+                });
+            });
             socket.on("disconnect", () => {
                 console.log(`❌ User disconnected: ${socket.id}`);
             });
