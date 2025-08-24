@@ -1,11 +1,11 @@
-import React, { useMemo, useRef,useState, useEffect, useContext } from 'react'
+import React, { useContext } from 'react'
 import ThemeContext from '../themeContext';
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Card} from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Users, LayoutDashboard, User, ListTodo } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
-function Sidebar({ activeView, setActiveView, directMessages }) {
+function Sidebar({ activeView, setActiveView, directMessages, groupChat }) {
     const { theme } = useContext(ThemeContext);
 
     const getLinkClassName = (viewId) => {
@@ -58,23 +58,25 @@ function Sidebar({ activeView, setActiveView, directMessages }) {
                     <Separator className={`my-3 ${theme === "light" ? "bg-gray-300" : "bg-neutral-600"}`} />
                     <nav className='flex-col space-y-1'>
                         {/* Group Chat */}
-                        <div onClick={() => setActiveView('group-chat')} className={getLinkClassName('group-chat')}>
-                            <Users className="h-5 w-5" />
-                            <span>Group Chat</span>
-                        </div>
+                        {groupChat.map((group) => (
+                            <div key={group._id} onClick={() => setActiveView(`chat-${group._id}`)} className={getLinkClassName(group._id)}>
+                                <Users className="h-5 w-5" />
+                                <span>{group.name}</span>
+                            </div>
+                        ))}
 
                         {/* Personal Chats */}
                         <h3 className={`px-3 mt-4 mb-2 text-xs font-semibold uppercase ${theme === 'light' ? 'text-gray-500' : 'text-gray-400'}`}>
                             Direct Messages
                         </h3>
                         <div className='space-y-1 h-full overflow-y-scroll'>
-                            {directMessages.map((user) => (
-                                <div key={user.id} onClick={() => setActiveView(user.id)} className={getLinkClassName(user.id)}>
+                            {directMessages.map((conv) => (
+                                <div key={conv._id} onClick={() => setActiveView(`chat-${conv._id}`)} className={getLinkClassName(conv._id)}>
                                     <Avatar className="h-6 w-6">
-                                        <AvatarImage src={user.avatar} alt={user.name} />
-                                        <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
+                                        <AvatarImage src={conv?.avatar || "/userimg.jpg"} />
+                                        <AvatarFallback>{conv?.name}</AvatarFallback>
                                     </Avatar>
-                                    <span>{user.name}</span>
+                                    <span>{conv.name}</span>
                                 </div>
                             ))}
                         </div>
