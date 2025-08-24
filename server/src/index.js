@@ -10,6 +10,8 @@ import subTodoRoutes from "./routes/subTodo.routes.js"
 import inviteRoutes from "./routes/invite.routes.js";
 import googleAuthRoutes from "./routes/googleAuth.routes.js";
 import calendarRoutes from "./routes/calendar.routes.js";
+import conversationRoutes from "./routes/coversation.routes.js";
+import { Message } from './models/message.model.js';
 
 connectDB()
     .then(() => {
@@ -42,30 +44,17 @@ connectDB()
         io.on("connection", (socket) => {
             console.log(`✅ User connected: ${socket.id}`);
             
-            // Listener for joining a project's group chat
-            socket.on('joinProjectRoom', (projectId) => {
-                const roomName = `project-${projectId}`;
-                socket.join(roomName);
-                console.log(`User ${socket.id} joined project room: ${roomName}`);
+            socket.on('join_conversation', (id) => {
+                socket.join(id);
+                console.log(`User ${socket.id} joined chat: ${id}`);
             });
 
-            // Listener for starting/joining a private chat
-            socket.on('joinPrivateChat', (recipientId) => {
-                const senderId = socket.userId;
-                const roomName = [senderId, recipientId].sort().join('-');
-                socket.join(`private-${roomName}`);
-                console.log(`User ${socket.id} joined private chat: private-${roomName}`);
-            });
+            socket.on('sendMessage', async (msg) => {
+                console.log(`User ${socket.id} sent a message: ${msg}`);
+                const newmsg = await Message.create(msg);
+                console.log(newmsg);
+                io.to(newmsg?.conversationId?.toString()).emit('receiveMessage', newmsg);
 
-            // Listener for sending any message
-            // The client will tell us which room to send the message to
-            socket.on('sendMessage', ({ room, message, sender }) => {
-                // Broadcast the message to all clients in the specified room
-                io.to(room).emit('receiveMessage', {
-                    message,
-                    sender,
-                    timestamp: new Date(),
-                });
             });
             socket.on("disconnect", () => {
                 console.log(`❌ User disconnected: ${socket.id}`);
@@ -79,6 +68,7 @@ connectDB()
         app.use("/api/v1/invite", inviteRoutes);
         app.use("/api/v1/auth/google", googleAuthRoutes);
         app.use("/api/v1/calendar", calendarRoutes);
+        app.use("/api/v1/conversations", conversationRoutes);
 
         // This error listener for the app is still good to have
         app.on("error", (error) => {
