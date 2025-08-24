@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import ThemeContext from '../themeContext';
 import { useNavigate } from 'react-router-dom';
 import getEnvironment from '../../getEnvironment';
+import { LayoutGrid } from 'lucide-react';
 
 function Navbar() {
   const { theme, setTheme, user, setUser } = useContext(ThemeContext)
@@ -86,6 +87,14 @@ function Navbar() {
             <img src="/username.svg" alt="" className={`${theme == "light" ? "invert-40 " : "invert-100 "}`} />
             <p className={`${theme == "light" ? "text-black " : "text-gray-300 "}`}>Profile</p>
           </div>
+          <div className={`flex gap-2 justify-start cursor-pointer`} onClick={(e)=>{
+            e.stopPropagation();
+            setView(false)
+            navigate("/dashboard");
+          }}>
+            <LayoutGrid className={`h-5 w-5 ${theme == "light" ? "invert-40 " : "invert-100 "}`} />
+            <p className={`${theme == "light" ? "text-black " : "text-gray-300 "}`}>Dashboard</p>
+          </div>
           <div className={`flex gap-2 justify-start cursor-pointer`}
           onClick={(e)=>{
             logoutUser();            
@@ -94,7 +103,7 @@ function Navbar() {
             <img src="/logout.svg" alt="" className={`${theme == "light" ? "invert-60 " : "invert-20 "}`} />
             <p className={`${theme == "light" ? "text-black " : "text-gray-300 "}`}>Sign Out</p>
           </div>
-          <div className='absolute top-1 right-1'>
+          <div className='absolute top-1 right-1 cursor-pointer'>
             <img src="/close.svg" alt="" className={`${theme == "light" ? "invert-100 " : "invert-100 "}`} onClick={() => { setView(false) }} />
           </div>
         </div> : ""
