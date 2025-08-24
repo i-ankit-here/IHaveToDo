@@ -30,8 +30,6 @@ function Todo({ todos, setTodos, item, index, TodoId, reqstatus, users }) {
 
     const save = async () => {
         try {
-            if (item._id === 0) setTodos((prevTodos) => prevTodos.filter((_, i) => i !== index));
-
             const todo = item;
             todo.content = title;
             todo.status = status;
@@ -73,6 +71,7 @@ function Todo({ todos, setTodos, item, index, TodoId, reqstatus, users }) {
                 } else {
                     throw new Error("Error occurred while saving todo");
                 }
+                setTodos((prevTodos) => prevTodos.filter((item, i) => item._id !== 0));
             }
             setEditing(false);
         } catch (error) {
