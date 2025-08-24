@@ -56,21 +56,21 @@ const addTodo = asyncHandler(async(req,res,next)=>{
             projectId: createdTodo._id,
             participants: [user._id],
             isGroupChat: true,
-            groupName: "Project Group Chat",
+            groupName: "Group Chat",
             groupAdmin: user._id
         });
 
         const createdMessage = await Message.create({
             sender: user._id,
             content: `New task created: ${title}`,
-            conversation: createdGroupConversation._id
+            conversationId: createdGroupConversation._id
         });
 
         const createdConversation = await Conversation.create({
             projectId: createdTodo._id,
             participants: [user._id,user._id],
             isGroupChat: false,
-            groupName: "You",
+            groupName: user.firstname,
         });
 
         res.status(200).json(new apiResponse(200,{
