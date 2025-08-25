@@ -8,6 +8,7 @@ import Sidebar from './sidebar';
 import AllTasks from './allTasks';
 import MyTasks from './myTasks';
 import ChatWindow from './chat';
+import { Summary } from './summary';
 
 const Todo = () => {
     const { theme, user } = useContext(ThemeContext);
@@ -212,6 +213,13 @@ const Todo = () => {
                             socket={socketRef.current}
                             conversationId={activeView.split('-')[1]}
                             currentUserId={user._id}
+                            users={users}
+                        />
+                    }
+
+                    {
+                        activeView.split('-')[0] === 'summary' && <Summary
+                            tasks={todos}
                             users={users}
                         />
                     }
