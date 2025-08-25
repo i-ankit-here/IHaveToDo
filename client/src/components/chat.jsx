@@ -94,7 +94,6 @@ const ChatWindow = ({ socket, conversationId, currentUserId, users }) => {
         };
 
         socket.emit('sendMessage', messageData);
-        setMessages((prevMessages) => [...prevMessages, messageData]);
         setNewMessage('');
     };
 
