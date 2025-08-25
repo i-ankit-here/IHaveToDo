@@ -24,7 +24,7 @@ const addSubTodo = asyncHandler(async (req, res, next) => {
     const { status,content, MajorTodoId , assignedTo, deadline} = req.body;
     console.log(req.body);
     let createdEvent = null;
-    if(deadline){
+    if(deadline && req.googleClient){
         req.body.description = content;
         req.body.summary = content;
         req.body.startDateTime = deadline;
@@ -75,7 +75,7 @@ const deleteSubTodo = asyncHandler(async (req, res, next) => {
         if (!id){ throw new apiError(401, "Provide Id of the todo to be deleted"); }
         const subtodo = await subTodo.findById(id);
         if (!subtodo) throw new apiError(404, "SubTodo with given id does not exists");
-        if(subtodo.eventId){
+        if(subtodo.eventId && req.googleClient){
             req.body.eventId = subtodo.eventId;
             const deletedEvent = await deleteEvent(req, res);
             console.log("deletedEvent: ",deletedEvent);
@@ -113,7 +113,7 @@ const updateSubTodo = asyncHandler(async (req, res, next) => {
         if (!existing) {
             throw new apiError(500, "subtodo with given id does not exists");
         }
-        if(existing.eventId && deadline){
+        if(existing.eventId && deadline && req.googleClient){
             req.body.summary = content;
             req.body.description = content;
             req.body.startDateTime = deadline;
