@@ -29,7 +29,8 @@ const MajorTodo = () => {
     const [inviteFlag, setInviteFlag] = useState(false);
     const [userIds, setUserIds] = useState([]);
     const [todoId, setTodoId] = useState("");
-    const [displayMode, setDisplayMode] = useState('grid'); 
+    const [displayMode, setDisplayMode] = useState('grid');
+    const [searchTerm, setSearchTerm] = useState("");
 
     useEffect(() => {
         const fecthData = async () => {
@@ -169,7 +170,7 @@ const MajorTodo = () => {
                     </div>
 
                     <nav className="flex flex-col gap-2">
-                        <Button variant="secondary" className="justify-start gap-3 text-md h-12">
+                        <Button variant="ghost" className="justify-start gap-3 text-md h-12">
                             <LayoutGrid className="w-5 h-5" /> Dashboard
                         </Button>
                         <Button variant="ghost" className="justify-start gap-3 text-md h-12 themed-text-secondary">
@@ -194,18 +195,18 @@ const MajorTodo = () => {
                                 <Input
                                     placeholder="Filter projects..."
                                     className="pl-10 h-11"
-                                // onChange={(e) => setSearchTerm(e.target.value)} // Add this logic
+                                    onChange={(e) => setSearchTerm(e.target.value)}
                                 />
                             </div>
 
                             <div className="flex-col flex-grow rounded-md overflow-y-auto no-scrollbar">
-                                {majorTodos
-                                    // .filter(...) // Filter logic goes here
+                                {majorTodos.filter(project => project.title.toLowerCase().includes(searchTerm.toLowerCase()))
                                     .map((project) => (
                                         <Button
                                             key={project._id || project.title}
                                             variant="ghost"
-                                            className="w-full text-md flex items-center justify-between rounded-md h-12 mb-1 themed-text"
+                                            className="w-full text-md flex items-center justify-between rounded-md h-12 mb-1 themed-text cursor-pointer "
+                                            onClick={() => {navigate(`/todos/${project._id}`)}}
                                         >
                                             <p className='text-base truncate'>{project.title}</p>
                                             <p className="text-sm font-semibold h-7 w-7 themed-bg-accent rounded-sm flex items-center justify-center">
@@ -218,9 +219,9 @@ const MajorTodo = () => {
                     </Collapsible>
 
                     <div className="mt-auto pt-4 ">
-                        <div className="p-2 themed-bg rounded-lg flex items-center justify-between">
+                        <div className="p-2 rounded-lg flex items-center justify-between">
                             <div className="flex items-center gap-3">
-                                <Avatar>
+                                <Avatar className={"border-2"}>
                                     <AvatarFallback>{user?.firstname?.[0]}</AvatarFallback>
                                 </Avatar>
                                 <div className="flex flex-col">
@@ -335,8 +336,8 @@ const MajorTodo = () => {
 
                             {displayMode === 'grid' && (
                                 <motion.div variants={itemVariants}>
-                                    <Card className="themed-border border-dashed flex items-center justify-center min-h-[240px] hover:shadow-lg hover:border-solid transition-all duration-200 cursor-pointer" onClick={addNewTodo}>
-                                        <div className="text-center themed-text-secondary"><Plus className="w-12 h-12 mx-auto mb-2" /><p className="font-semibold">Add New Project</p></div>
+                                    <Card className="themed-border h-16 w-16 fixed bottom-3 right-6 rounded-full border-dashed flex items-center justify-center hover:shadow-lg hover:border-solid transition-all duration-200 cursor-pointer invert-100" onClick={addNewTodo}>
+                                        <div className="text-center themed-text-secondary"><Plus className="w-8 h-8" /></div>
                                     </Card>
                                 </motion.div>
                             )}
