@@ -1,0 +1,125 @@
+body {
+  background-color: var(--background-primary);
+  color: var(--text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Define theme variables if you haven't already */
+:root {
+  --background-primary: #ffffff;
+  --background-secondary: #f0f2f5;
+  --text-primary: #1c1e21;
+  --text-secondary: #65676b;
+  --border-color: #dadde1;
+}
+
+[data-theme="dark"] {
+  --background-primary: #000000;
+  --background-secondary: #242526;
+  --text-primary: #e4e6eb;
+  --text-secondary: #b0b3b8;
+  --border-color: #3e4042;
+}
+
+.themed-bg {
+  background-color: var(--background-primary);
+}
+
+.themed-bg-secondary {
+  background-color: var(--background-secondary);
+}
+
+.themed-text {
+  color: var(--text-primary);
+}
+
+.themed-text-secondary {
+  color: var(--text-secondary);
+}
+
+.themed-border {
+  border: 1px solid var(--border-color);
+}
+
+.themed-hover-bg:hover {
+  background-color: var(--background-secondary);
+}
+
+[data-theme="light"] .icon-down-arrow {
+  filter: invert(1);
+}
+[data-theme="dark"] .icon-down-arrow {
+  filter: none;
+}
+
+[data-theme="light"] .icon-profile,
+[data-theme="light"] .icon-dashboard {
+  filter: invert(40%);
+}
+[data-theme="dark"] .icon-profile,
+[data-theme="dark"] .icon-dashboard {
+  filter: invert(100%);
+}
+
+[data-theme="light"] .icon-logout {
+  filter: invert(60%);
+}
+[data-theme="dark"] .icon-logout {
+  filter: invert(20%);
+}
+
+[data-theme="light"] .icon-close,
+[data-theme="dark"] .icon-close {
+  filter: invert(100%);
+}
+
+[data-theme="light"] .icon-logo {
+  filter: invert(1);
+}
+[data-theme="dark"] .icon-logo {
+  filter: none;
+}
+
+
+.glass-card {
+  background-color: var(--background-secondary-alpha); /* Use a semi-transparent variable */
+  -webkit-backdrop-filter: blur(12px); /* For Safari */
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--border-color-alpha); /* Use a semi-transparent border */
+}
+
+.aurora-container {
+  position: relative;
+  overflow: hidden;
+  border-radius: 0.75rem; /* Match your card's border-radius */
+}
+
+.aurora-container:hover .aurora-glow {
+  opacity: 0.4;
+}
+
+.aurora-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 150%;
+  height: 150%;
+  filter: blur(60px);
+  opacity: 0.2;
+  transition: opacity 0.3s ease-in-out;
+  pointer-events: none; /* Allows clicking through the glow */
+}
+
+/* Define the new transparent variables for your themes */
+:root {
+  /* ... your existing variables */
+  --background-secondary-alpha: rgba(240, 242, 245, 0.7);
+  --border-color-alpha: rgba(218, 221, 225, 0.5);
+}
+
+[data-theme="dark"] {
+  /* ... your existing variables */
+  --background-secondary-alpha: rgba(36, 37, 38, 0.6);
+  --border-color-alpha: rgba(62, 64, 66, 0.5);
+}

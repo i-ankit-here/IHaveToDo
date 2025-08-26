@@ -41,10 +41,14 @@ function App() {
     fetchUser();
   }, [])
 
-  //setting the theme
+
   useEffect(() => {
-    document.body.style.background = theme == "light" ? "white" : "#171616";
-  }, [theme])
+    if (theme === 'dark') {
+      document.body.classList.add('dark');
+    } else {
+      document.body.classList.remove('dark');
+    }
+  }, [theme]);
 
   // console.log(user);
 

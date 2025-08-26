@@ -1,89 +1,122 @@
-import React, { useState, useContext } from 'react'
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useContext } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import getEnvironment from '../../getEnvironment';
 import ThemeContext from '../themeContext';
-import { useSearchParams } from 'react-router-dom';
 
+// 1. Import Shadcn UI components
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 const Login = () => {
     const apiURL = getEnvironment();
-    const Navigate = useNavigate();
+    const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
+    const { setUser } = useContext(ThemeContext);
 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const [showSlider,setShowSlider] = useState(false)
 
-    const {theme, setTheme,user,setUser} = useContext(ThemeContext);
-    const [searchParams] = useSearchParams();
-    const redirect = searchParams.get("redirect");
+    const [showSlider, setShowSlider] = useState(false);
+
+    const [feedback, setFeedback] = useState({ message: '', type: '' });
 
     const submit = async (event) => {
+        event.preventDefault();
+        setFeedback({ message: '', type: '' }); 
+
+        if (!password || !username) {
+            setFeedback({ message: "Username and password are required", type: 'error' });
+            return;
+        }
+
+        setShowSlider(true);
+
         try {
-            setShowSlider(true);
-            event.preventDefault();
-            const info = document.getElementById("info");
-            if (!password || !username) {
-                setShowSlider(false);
-                info.style.color = "red";
-                info.innerText = "username and password are necessary";
-                return;
-            }
-            const formData = {
-                username: username,
-                password: password
-            }
-            console.log(formData)
+            const formData = { username, password };
             const response = await fetch(`${apiURL}/api/v1/users/login`, {
                 method: 'POST',
                 headers: { "Content-type": "application/json" },
                 body: JSON.stringify(formData),
-                credentials:"include"
-            })
+                credentials: "include"
+            });
             const data = await response.json();
-            console.log(data);
+
             if (data.success) {
-                setShowSlider(false);
+                setFeedback({ message: "Login successful! Redirecting...", type: 'success' });
                 setUser(data?.data?.user);
-                info.style.color = theme=="light"?"green":"chartreuse";
-                info.innerText = "User logged in successfully "
-                if(redirect)Navigate(`/${redirect}`);
-                else Navigate("/dashboard");
-            }
-            else {
-                setShowSlider(false);
-                info.style.color = "red";
-                info.innerText = data.message;
-                return;
+                const redirect = searchParams.get("redirect") || "/dashboard";
+                setTimeout(() => navigate(redirect), 1000);
+            } else {
+                setFeedback({ message: data.message || "An unknown error occurred", type: 'error' });
             }
         } catch (error) {
+            console.error(error);
+            setFeedback({ message: "Failed to connect to the server.", type: 'error' });
+        } finally {
             setShowSlider(false);
-            console.log(error);
         }
-        setShowSlider(false);
-    }
-    return (
-        <div className={`w-full h-dvh flex justify-center items-center ${theme == "light" ? " bg-white " : " bg-black "}`}>
-            <form id="form" onSubmit={submit} className={`relative rounded-md h-min w-[90dvw] md:w-100 p-8 overflow-hidden  ${theme == "light" ? " bg-gray-300 shadow-2xl " : " bg-neutral-800 "}`}>
-                <div className='flex w-full flex-col gap-8 items-center'>
-                    <div><p className={`text-4xl font-bold ${theme == "light" ? " text-black " : " text-white "} `}>Sign In</p></div>
+    };
 
-                    <div className='flex w-full'>
-                        <img src="username.svg" alt="" className={`p-1 bg-transparent h-10 ${theme == "light" ? "  " : " invert-100 "}`} />
-                        <input name="username" type="text" placeholder="Username" value={username} onChange={(e) => { setUsername(e.target.value) }} className='p-1 border-2 border-gray-700 bg-white w-full rounded-sm h-10' />
-                    </div>
-                    <div className='flex w-full'>
-                        <img src="pass.svg" alt="" className={`p-1 bg-transparent h-10 ${theme == "light" ? "  " : " invert-100 "}`} />
-                        <input name='password' type="password" placeholder="Password" value={password} onChange={(e) => { setPassword(e.target.value) }} className='p-1 border-2 border-gray-700 bg-white w-full rounded-sm h-10' />
-                    </div>
-                    <div className='flex-col w-full justify-center items-center'>
-                        <button type='submit' disabled={showSlider} className='bg-gray-50 rounded-sm shadow-2xl hover:bg-gray-200 hover:shadow-2xl p-2 w-full font-medium'>Sign In</button>
-                        <div><p id="info" className='text-center text-md mt-1 pt-1' ></p></div>
-                    </div>
-                </div>
-                <div className={`absolute bottom-0 left-0 h-1 bg-blue-500 w-30 slider ${showSlider?"block":"hidden"}`} ></div>
-            </form>
+    return (
+        <div className="flex h-dvh w-full items-center justify-center bg-background p-4">
+            <Card className="relative w-full max-w-md overflow-hidden">
+                <CardHeader>
+                    <CardTitle className="text-3xl">Sign In</CardTitle>
+                    <CardDescription>Enter your credentials to continue.</CardDescription>
+                </CardHeader>
+                <form onSubmit={submit}>
+                    <CardContent className="space-y-4">
+                        <div className="grid w-full items-center gap-1.5">
+                            <Label htmlFor="username">Username</Label>
+                            <div className="flex items-center">
+                                <Input
+                                    id="username"
+                                    type="text"
+                                    placeholder="Username"
+                                    value={username}
+                                    onChange={(e) => setUsername(e.target.value)}
+                                    required
+                                />
+                            </div>
+                        </div>
+                        <div className="grid w-full items-center gap-1.5">
+                            <Label htmlFor="password">Password</Label>
+                             <div className="flex items-center">
+                                <Input
+                                    id="password"
+                                    type="password"
+                                    placeholder="Password"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    required
+                                />
+                            </div>
+                        </div>
+                    </CardContent>
+                    <CardFooter className="flex flex-col gap-4">
+                        <Button type="submit" disabled={showSlider} className="w-full">
+                           Sign In
+                        </Button>
+                        {feedback.message && (
+                            <p className={`text-sm ${feedback.type === 'error' ? 'text-destructive' : 'text-green-600'}`}>
+                                {feedback.message}
+                            </p>
+                        )}
+                    </CardFooter>
+                </form>
+                <div className={`absolute bottom-0 left-0 h-1 w-30 bg-primary slider ${showSlider ? "block" : "hidden"}`}></div>
+            </Card>
         </div>
-    )
+    );
 }
 
-export default Login
+export default Login;
