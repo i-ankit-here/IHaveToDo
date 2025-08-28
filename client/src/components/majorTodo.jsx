@@ -163,7 +163,7 @@ const MajorTodo = () => {
     return (
         <>
             <div className={`flex h-dvh overflow-y-hidden themed-bg ${inviteFlag ? "opacity-20" : "opacity-100"}`}>
-                <aside className="w-[27dvw] min-w-[300px] h-full themed-bg-secondary p-4 flex flex-col gap-4 border-r themed-border">
+                <aside className="w-[27dvw] min-w-[300px] h-full themed-bg p-4 flex flex-col gap-4 border-r-2">
                     <div className='flex items-center gap-2 px-2 pb-4 '>
                         <img src="/iHaveToDo.svg" className="h-10 icon-logo" alt="Logo" />
                         {/* <h1 className="text-2xl font-bold themed-text">ProjectFlow</h1> */}
@@ -206,7 +206,7 @@ const MajorTodo = () => {
                                             key={project._id || project.title}
                                             variant="ghost"
                                             className="w-full text-md flex items-center justify-between rounded-md h-12 mb-1 themed-text cursor-pointer "
-                                            onClick={() => {navigate(`/todos/${project._id}`)}}
+                                            onClick={() => {navigate(`/todos/${project._id}`,{ state: project })}}
                                         >
                                             <p className='text-base truncate'>{project.title}</p>
                                             <p className="text-sm font-semibold h-7 w-7 themed-bg-accent rounded-sm flex items-center justify-center">
@@ -234,11 +234,11 @@ const MajorTodo = () => {
                 </aside>
 
                 <main className='flex-1 flex flex-col'>
-                    <header className='p-6 pb-3 pt-10 flex items-center justify-between sticky top-0 themed-bg z-10 mx-2 border-b-1'>
-                        <h2 className="themed-text text-4xl font-semibold font-sans">Projects</h2>
+                    <header className='p-6 pt-10 flex items-center justify-between sticky top-0 themed-bg z-10 mx-2 border-b-1'>
+                        <h2 className="themed-text text-4xl font-semibold font-sans">{user?.firstname}'s Projects</h2>
                     </header>
 
-                    <div className="p-8 overflow-y-auto">
+                    <div className="p-6 overflow-y-auto">
                         <motion.div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8" initial="hidden" animate="visible" variants={containerVariants}>
                             <motion.div variants={itemVariants}>
                                 <Card className="themed-bg-secondary themed-border"><CardHeader className="flex flex-row items-center justify-between pb-2"><CardTitle className="text-sm font-medium">Total Projects</CardTitle><FolderKanban className="w-5 h-5 themed-text-secondary" /></CardHeader><CardContent><div className="text-3xl font-bold">{totalProjects}</div></CardContent></Card>
@@ -271,7 +271,6 @@ const MajorTodo = () => {
                                     return (
                                         <motion.div key={project._id || index} variants={itemVariants} className="group relative">
                                             <Card className="themed-bg-secondary themed-border flex flex-col justify-between min-h-[240px] transition-all duration-200">
-                                                {/* NEW: Hover-Reveal Action Buttons */}
                                                 {!inEditMode && (
                                                     <div className="absolute top-3 right-3 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                                                         <Button variant="ghost" size="icon" onClick={() => { setView(index); setTitle(project.title); }}> <Pencil className="w-5 h-5" /> </Button>
