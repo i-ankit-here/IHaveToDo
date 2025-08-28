@@ -12,18 +12,17 @@ function Navbar() {
   const [show, setShow] = useState("");
   const apiURL = getEnvironment();
 
-  // This effect applies the current theme to the entire app
+
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
-    localStorage.setItem('theme', theme); // Keep theme in sync with local storage
+    localStorage.setItem('theme', theme); 
   }, [theme]);
 
-  // Effect to track the current page path
+
   useEffect(() => {
     setShow(window.location.pathname);
   }, [window.location.pathname]);
 
-  // A single function to toggle the theme
   const toggleTheme = () => {
     setTheme(prevTheme => (prevTheme === 'light' ? 'dark' : 'light'));
   };
@@ -46,12 +45,9 @@ function Navbar() {
   };
 
   return (
-    // Replaced conditional background with a single .themed-bg class
-    // Note: The special background for login/register on dark mode is preserved
     <div className={`h-15 ${path === "/" ? " sticky " : " absolute "} top-0 right-1 flex justify-end items-center m-0 themed-bg z-20 ${(show === "/login" || show === "/register") && theme === "dark" ? "!bg-black" : ""}`}>
 
       <div className="themed-text flex items-center">
-        {/* Simplified theme toggle button */}
         <img
           src={theme === "light" ? "/darkTheme.png" : "/lightTheme.png"}
           width="40px"
@@ -62,7 +58,7 @@ function Navbar() {
         />
 
         {user ? (
-          <div className="px-3 py-1.5 themed-hover-bg rounded-4xl mx-4 flex" onClick={() => { setView(true) }}>
+          <div className="px-3 py-1.5 themed-hover-bg rounded-4xl mx-4 flex cursor-pointer" onClick={() => { setView(true) }}>
             <img src="/userimg.jpg" width="40px" height="40px" className='rounded-full' alt="User avatar" />
             <img src="/downArraw.svg" className="icon-down-arrow" alt="Down arrow" />
           </div>
@@ -79,7 +75,7 @@ function Navbar() {
         )}
       </div>
       {
-        view && user && ( // Added checks for `user` to prevent errors
+        view && user && ( 
           <div className="absolute top-15 right-1 h-60 w-60 rounded-md p-3 justify-around flex flex-col gap-3 border-1 themed-bg-secondary themed-border">
             <div className='w-full flex justify-center'>
               <img src={user.avatar ? user.avatar : "/userimg.jpg"} className='h-15 rounded-full' alt="User avatar" />
