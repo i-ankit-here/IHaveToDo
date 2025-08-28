@@ -52,14 +52,25 @@ body {
   filter: none;
 }
 
-[data-theme="light"] .icon-profile,
-[data-theme="light"] .icon-dashboard {
+[data-theme="light"] .icon-profile{
   filter: invert(40%);
 }
-[data-theme="dark"] .icon-profile,
-[data-theme="dark"] .icon-dashboard {
+[data-theme="dark"] .icon-profile{
   filter: invert(100%);
 }
+
+[data-theme="light"] .icon-dashboard {
+  filter: invert(40%);
+  color: black;
+  fill: black;
+}
+
+[data-theme="dark"] .icon-dashboard {
+  filter: invert(30%);
+  color: white;
+  fill: white;
+}
+
 
 [data-theme="light"] .icon-logout {
   filter: invert(60%);
@@ -68,8 +79,7 @@ body {
   filter: invert(20%);
 }
 
-[data-theme="light"] .icon-close,
-[data-theme="dark"] .icon-close {
+[data-theme="light"] .icon-close{
   filter: invert(100%);
 }
 
