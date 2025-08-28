@@ -39,7 +39,6 @@ const getAuthenticatedClientloose = asyncHandler(async function getAuthenticated
 
     if (!user || !user.googleAccessToken) {
         next();
-        return;
     }
 
     const oauth2Client = new google.auth.OAuth2(
@@ -70,4 +69,3 @@ const getAuthenticatedClientloose = asyncHandler(async function getAuthenticated
 
 export { getAuthenticatedClient, getAuthenticatedClientloose }
 
-// Middleware to get a user's tokens and create an authenticated client
