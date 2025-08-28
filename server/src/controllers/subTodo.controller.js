@@ -130,7 +130,8 @@ const updateSubTodo = asyncHandler(async (req, res, next) => {
             req.body.summary = content;
             req.body.startDateTime = deadline;
             req.body.endDateTime = deadline;
-            existing.eventId = await setEvent(req, res);
+            const newEvent = await setEvent(req, res);
+            existing.eventId = newEvent.id;
         }
         const prev = existing.status;
         const nxt = status;
@@ -156,6 +157,7 @@ const updateSubTodo = asyncHandler(async (req, res, next) => {
         }, "Todo updated successfully"))
 
     } catch (error) {
+        console.log(error);
         throw new apiError(500, "Error occured while updating the todo into database");
     }
 });
