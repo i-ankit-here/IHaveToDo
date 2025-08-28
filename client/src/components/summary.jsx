@@ -1,21 +1,24 @@
 import React, { useMemo } from 'react';
 import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer, LineChart, Line, CartesianGrid, XAxis, YAxis } from 'recharts';
+import { FolderKanban, CheckCircle2, AlertTriangle, Clock, ListTodo, Users, BarChart3 } from 'lucide-react';
 
-const StatCard = ({ title, value, icon, color }) => (
-    <div className="bg-white p-6 rounded-lg shadow-md flex items-center">
-        <div className={`w-12 h-12 rounded-full flex items-center justify-center ${color}`}>{icon}</div>
+const StatCard = ({ title, value, icon, accentClassName }) => (
+    <div className="themed-bg-secondary p-6 rounded-lg shadow-md flex items-center">
+        <div className={`w-12 h-12 rounded-full flex items-center justify-center ${accentClassName}`}>
+            {icon}
+        </div>
         <div className="ml-4">
-            <p className="text-gray-500 text-sm font-medium">{title}</p>
-            <p className="text-2xl font-bold text-gray-800">{value}</p>
+            <p className="themed-text-secondary text-sm font-medium">{title}</p>
+            <p className="text-2xl font-bold themed-text">{value}</p>
         </div>
     </div>
 );
 
 const ProgressBar = ({ value }) => (
-    <div className="w-full bg-gray-200 rounded-full h-4"><div className="bg-blue-600 h-4 rounded-full transition-all duration-500" style={{ width: `${value}%` }}></div></div>
+    <div className="w-full themed-bg-accent rounded-full h-4">
+        <div className="themed-accent-bg h-4 rounded-full transition-all duration-500" style={{ width: `${value}%` }}></div>
+    </div>
 );
-
-// --- SUMMARY COMPONENT ---
 
 export const Summary = ({ tasks, users }) => {
     const insights = useMemo(() => {
@@ -23,7 +26,6 @@ export const Summary = ({ tasks, users }) => {
 
         const totalTasks = tasks.length;
 
-        // Use updatedAt as a fallback for completedAt
         const completedTasks = tasks
             .filter(t => t.status === 'completed')
             .map(t => ({ ...t, completedAt: t.completedAt || t.updatedAt }));
@@ -85,46 +87,54 @@ export const Summary = ({ tasks, users }) => {
     const PIE_COLORS = ['#fbbf24', '#38bdf8', '#22c55e'];
 
     if (!insights.totalTasks && insights.totalTasks !== 0) {
-        return <div className="p-8 text-center text-gray-500">Loading dashboard...</div>;
+        return <div className="p-8 text-center themed-text-secondary">Loading dashboard...</div>;
     }
 
     return (
-        <div className="p-4 sm:p-6 md:p-8 bg-gray-50 font-sans overflow-y-scroll">
+        <div className="p-4 sm:p-6 md:p-8 themed-bg font-sans h-full overflow-y-auto">
             <header className="mb-8">
-                <h1 className="text-3xl font-bold text-gray-800">Project Insights Summary</h1>
-                <p className="text-gray-500 mt-1">An overview of your project's health and team performance.</p>
+                <h1 className="text-3xl font-bold themed-text">Project Insights Summary</h1>
+                <p className="themed-text-secondary mt-1">An overview of your project's health and team performance.</p>
             </header>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                <StatCard title="Total Tasks" value={insights.totalTasks} icon={<svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" /></svg>} color="bg-blue-100" />
-                <StatCard title="Completed" value={`${insights.completedTasks} / ${insights.totalTasks}`} icon={<svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>} color="bg-green-100" />
-                <StatCard title="Tasks Overdue" value={insights.overdueTasks} icon={<svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>} color="bg-red-100" />
-                <StatCard title="Avg. Completion" value={`${insights.avgCompletionTimeDays} days`} icon={<svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v.01" /></svg>} color="bg-purple-100" />
+                <StatCard title="Total Tasks" value={insights.totalTasks} icon={<FolderKanban className="h-6 w-6 text-blue-600" />} accentClassName="bg-blue-100" />
+                <StatCard title="Completed" value={`${insights.completedTasks} / ${insights.totalTasks}`} icon={<CheckCircle2 className="h-6 w-6 text-green-600" />} accentClassName="bg-green-100" />
+                <StatCard title="Tasks Overdue" value={insights.overdueTasks} icon={<AlertTriangle className="h-6 w-6 text-red-600" />} accentClassName="bg-red-100" />
+                <StatCard title="Avg. Completion" value={`${insights.avgCompletionTimeDays} days`} icon={<Clock className="h-6 w-6 text-purple-600" />} accentClassName="bg-purple-100" />
             </div>
 
-            <div className="bg-white p-6 rounded-lg shadow-md mb-8">
-                <div className="flex justify-between items-center mb-2"><h2 className="text-lg font-semibold text-gray-700">Overall Progress</h2><span className="font-bold text-blue-600 text-lg">{Math.round(insights.overallProgress)}%</span></div>
+            <div className="themed-bg-secondary p-6 rounded-lg shadow-md mb-8">
+                <div className="flex justify-between items-center mb-2"><h2 className="text-lg font-semibold themed-text">Overall Progress</h2><span className="font-bold themed-accent-text text-lg">{Math.round(insights.overallProgress)}%</span></div>
                 <ProgressBar value={insights.overallProgress} />
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-                <div className="lg:col-span-1 bg-white p-6 rounded-lg shadow-md">
-                    <h2 className="text-lg font-semibold text-gray-700 mb-4 text-center">Task Status</h2>
-                    <ResponsiveContainer width="100%" height={250}><PieChart><Pie data={insights.statusData} cx="50%" cy="50%" labelLine={false} outerRadius={100} fill="#8884d8" dataKey="value" nameKey="name">{insights.statusData.map((entry, index) => (<Cell key={`cell-${index}`} fill={PIE_COLORS[index % PIE_COLORS.length]} />))}</Pie><Tooltip /><Legend /></PieChart></ResponsiveContainer>
+                <div className="lg:col-span-1 themed-bg-secondary p-6 rounded-lg shadow-md">
+                    <h2 className="text-lg font-semibold themed-text mb-4 text-center">Task Status</h2>
+                    <ResponsiveContainer width="100%" height={250}>
+                        <PieChart>
+                            <Pie data={insights.statusData} cx="50%" cy="50%" labelLine={false} outerRadius={100} fill="#8884d8" dataKey="value" nameKey="name">
+                                {insights.statusData.map((entry, index) => (<Cell key={`cell-${index}`} fill={PIE_COLORS[index % PIE_COLORS.length]} />))}
+                            </Pie>
+                            <Tooltip contentStyle={{ backgroundColor: 'var(--background-secondary)', border: '1px solid var(--border-color)', borderRadius: '0.5rem' }} itemStyle={{ color: 'var(--text-primary)' }} />
+                            <Legend wrapperStyle={{ color: 'var(--text-secondary)' }} />
+                        </PieChart>
+                    </ResponsiveContainer>
                 </div>
 
-                <div className="lg:col-span-1 bg-white p-6 rounded-lg shadow-md">
-                    <h2 className="text-lg font-semibold text-gray-700 mb-4">Team Performance</h2>
+                <div className="lg:col-span-1 themed-bg-secondary p-6 rounded-lg shadow-md">
+                    <h2 className="text-lg font-semibold themed-text mb-4">Team Performance</h2>
                     <div className="space-y-2">
-                        <div className="grid grid-cols-3 gap-4 text-sm font-semibold text-gray-500 px-3">
+                        <div className="grid grid-cols-3 gap-4 text-sm font-semibold themed-text-secondary px-3">
                             <span>Member</span>
                             <span className="text-center">Tasks</span>
                             <span className="text-right">On-Time %</span>
                         </div>
                         {insights.teamPerformanceData.map(user => (
-                            <div key={user.name} className="grid grid-cols-3 gap-4 p-3 bg-gray-50 rounded-md items-center">
-                                <span className="font-medium text-gray-800">{user.name}</span>
-                                <span className="text-center text-lg font-bold text-gray-700">{user.tasks}</span>
+                            <div key={user.name} className="grid grid-cols-3 gap-4 p-3 themed-bg rounded-md items-center">
+                                <span className="font-medium themed-text">{user.name}</span>
+                                <span className="text-center text-lg font-bold themed-text">{user.tasks}</span>
                                 <span className={`text-right font-semibold ${user.onTimeRate >= 80 ? 'text-green-600' : 'text-amber-600'}`}>{user.onTimeRate}%</span>
                             </div>
                         ))}
@@ -133,25 +143,34 @@ export const Summary = ({ tasks, users }) => {
             </div>
 
             <div className="grid grid-cols-1 gap-8">
-                <div className="bg-white p-6 rounded-lg shadow-md">
-                    <h2 className="text-lg font-semibold text-gray-700 mb-4">Task Completion Timeline</h2>
-                    <ResponsiveContainer width="100%" height={300}><LineChart data={insights.timelineData} margin={{ top: 5, right: 20, left: -10, bottom: 5 }}><CartesianGrid strokeDasharray="3 3" /><XAxis dataKey="date" /><YAxis allowDecimals={false} /><Tooltip /><Legend /><Line type="monotone" dataKey="completed" stroke="#16a34a" strokeWidth={2} name="Tasks Completed" /></LineChart></ResponsiveContainer>
+                <div className="themed-bg-secondary p-6 rounded-lg shadow-md">
+                    <h2 className="text-lg font-semibold themed-text mb-4">Task Completion Timeline</h2>
+                    <ResponsiveContainer width="100%" height={300}>
+                        <LineChart data={insights.timelineData} margin={{ top: 5, right: 20, left: -10, bottom: 5 }}>
+                            <CartesianGrid strokeDasharray="3 3" stroke="var(--border-color)" />
+                            <XAxis dataKey="date" stroke="var(--text-secondary)" />
+                            <YAxis allowDecimals={false} stroke="var(--text-secondary)" />
+                            <Tooltip contentStyle={{ backgroundColor: 'var(--background-secondary)', border: '1px solid var(--border-color)', borderRadius: '0.5rem' }} itemStyle={{ color: 'var(--text-primary)' }} />
+                            <Legend wrapperStyle={{ color: 'var(--text-secondary)' }} />
+                            <Line type="monotone" dataKey="completed" stroke="#16a34a" strokeWidth={2} name="Tasks Completed" />
+                        </LineChart>
+                    </ResponsiveContainer>
                 </div>
 
-                <div className="bg-white p-6 rounded-lg shadow-md">
-                    <h2 className="text-lg font-semibold text-gray-700 mb-4">Upcoming Deadlines</h2>
+                <div className="themed-bg-secondary p-6 rounded-lg shadow-md">
+                    <h2 className="text-lg font-semibold themed-text mb-4">Upcoming Deadlines</h2>
                     <div className="space-y-3">
                         {insights.upcomingTasks.length > 0 ? (
                             insights.upcomingTasks.map(task => (
-                                <div key={task._id} className="flex justify-between items-center p-3 bg-gray-50 rounded-md">
+                                <div key={task._id} className="flex justify-between items-center p-3 themed-bg rounded-md">
                                     <div>
-                                        <p className="font-medium text-gray-800">{task.content}</p>
-                                        <p className="text-sm text-gray-500">{insights.getAssigneeNames(task.assignedTo).join(', ')}</p>
+                                        <p className="font-medium themed-text">{task.content}</p>
+                                        <p className="text-sm themed-text-secondary">{insights.getAssigneeNames(task.assignedTo).join(', ')}</p>
                                     </div>
-                                    <span className="text-sm font-semibold text-gray-600">{new Date(task.deadline).toLocaleDateString()}</span>
+                                    <span className="text-sm font-semibold themed-text-secondary">{new Date(task.deadline).toLocaleDateString()}</span>
                                 </div>
                             ))
-                        ) : (<p className="text-center text-gray-500 py-4">No upcoming deadlines.</p>)}
+                        ) : (<p className="text-center themed-text-secondary py-4">No upcoming deadlines.</p>)}
                     </div>
                 </div>
             </div>

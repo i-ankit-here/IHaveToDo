@@ -22,7 +22,7 @@ function Sidebar({ activeView, setActiveView, directMessages, groupChat }) {
 
 
     return (
-        <Card className={`w-[27dvw] rounded-lg h-[100dvh] ${theme == "light" ? "bg-gradient-to-b from-neutral-50 to-neutral-100 border-r-2 border-neutral-200" : "bg-gradient-to-b from-neutral-900 to-lightGrey border-neutral-700"} pt-10 flex-col items-center border-0 border-r-2 shadow-lg`}>
+        <Card className={`w-[27dvw] h-[100dvh] themed-bg pt-10 flex-col items-center border-r-2 shadow-lg`} style={{ borderRadius: "0" }}>
             <div className='flex justify-center w-full px-2 mb-8'>
                 <img src="/iHaveToDo.svg" className={`h-12 ${theme == "light" ? "invert-100" : ""}`} alt="" />
             </div>

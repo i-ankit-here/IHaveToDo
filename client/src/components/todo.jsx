@@ -3,7 +3,8 @@ import ThemeContext from '../themeContext';
 import getEnvironment from '../../getEnvironment';
 import { useLocation } from 'react-router-dom';
 import io from 'socket.io-client';
-import { Button } from "@/components/ui/button";
+import { Card } from './ui/card';
+import { Plus } from "lucide-react";
 import Sidebar from './sidebar';
 import AllTasks from './allTasks';
 import MyTasks from './myTasks';
@@ -23,7 +24,6 @@ const Todo = () => {
     const [groupChat, setGroupChat] = useState([]);
     const [users, setUsers] = useState({});
 
-    // Collapsible sections state
     const [collapsedSections, setCollapsedSections] = useState({
         pending: false,
         'in-progress': false,
@@ -33,7 +33,6 @@ const Todo = () => {
     const location = useLocation();
     const state = location.state;
 
-    // Get counts for different statuses
     const pendingTodos = todos.filter(todo => todo.status === 'pending');
     const inProgressTodos = todos.filter(todo => todo.status === 'in-progress');
     const completedTodos = todos.filter(todo => todo.status === 'completed');
@@ -115,6 +114,7 @@ const Todo = () => {
 
         fetchData();
         fetchTeam();
+
         const handleNewTodo = (newTodo) => {
             setTodos((currentTodo) => [...currentTodo, newTodo]);
         };
@@ -156,7 +156,7 @@ const Todo = () => {
 
     return (
         <>
-            <div className='flex gap-1 h-dvh overflow-y-hidden'>
+            <div className='flex gap-0 h-dvh overflow-y-hidden'>
                 <Sidebar
                     activeView={activeView}
                     setActiveView={setActiveView}
@@ -164,18 +164,18 @@ const Todo = () => {
                     groupChat={groupChat}
                 />
                 <div className='flex flex-col w-full'>
-                    <div className={`p-6 ${theme === 'light' ? 'bg-white' : 'bg-neutral-900'} border-b ${theme === 'light' ? 'border-gray-200' : 'border-neutral-700'}`}>
-                        <h1 className={`text-4xl font-bold ${theme == "light" ? "text-gray-900" : "text-zinc-100"}`}>
-                            {`${state?.title}`}
+                    <div className="px-6 pt-6 pb-2 mx-2 border-b-1">
+                        <h1 className="text-4xl font-bold themed-text">
+                            {`${state?.title || 'Project'}`}
                         </h1>
-                        <p className={`text-lg mt-2 ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>
+                        <p className="text-lg mt-2 themed-text-secondary">
                             Manage your tasks efficiently
                         </p>
                     </div>
                     {activeView === 'all-tasks' && (todos.length == 0 ?
                         <div className='flex-1 flex items-center justify-center w-full'>
                             <div className="w-full">
-                                <p className={`text-xl text-center w-full ${theme == "light" ? "text-gray-600" : "text-zinc-400"}`}>
+                                <p className="text-xl text-center w-full themed-text-secondary">
                                     Add your first task by clicking on the add button
                                 </p>
                             </div>
@@ -225,28 +225,25 @@ const Todo = () => {
                     }
                 </div >
                 {
-                    activeView === 'all-tasks' && <Button
-                        className={`fixed bottom-8 right-8 ${theme == "light" ? "bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700" : "bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800"} rounded-full shadow-lg hover:shadow-xl transition-all duration-200 p-0 h-16 w-16`}
-                        onClick={(e) => {
-                            e.stopPropagation();
-                            if (todos.some((item) => item._id === 0)) return;
-                            const todo = {
-                                _id: 0,
-                                content: "",
-                                status: "pending",
-                                deadline: "",
-                                assignedTo: [],
-                                notes: [],
-                                MajorTodoId: Id
-                            }
-                            const arr = [...todos, todo];
-                            setTodos(arr);
-                        }}
-                    >
-                        <img src="/plusIcon.png" alt="" className='h-8 w-8' />
-                    </Button>
+                    activeView === 'all-tasks' && <Card className="themed-border h-16 w-16 fixed bottom-3 right-6 rounded-full flex items-center justify-center hover:shadow-lg hover:border-solid transition-all duration-200 cursor-pointer invert-100" onClick={(e) => {
+                        e.stopPropagation();
+                        if (todos.some((item) => item._id === 0)) return;
+                        const todo = {
+                            _id: 0,
+                            content: "",
+                            status: "pending",
+                            deadline: "",
+                            assignedTo: [],
+                            notes: [],
+                            MajorTodoId: Id
+                        }
+                        const arr = [...todos, todo];
+                        setTodos(arr);
+                    }}>
+                        <div className="text-center themed-text-secondary"><Plus className="w-8 h-8" /></div>
+                    </Card>
                 }
-            </div>
+        </div >
         </>
     )
 }

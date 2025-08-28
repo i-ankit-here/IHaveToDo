@@ -48,7 +48,7 @@ export const CollapsibleSection = ({ title, status, count, icon, children, toggl
     return (
         <Card className={`mb-6 overflow-hidden transition-all duration-300 ${colors.bg} ${colors.border} border-3`}>
             <CardHeader
-                className={`pl-4 cursor-pointer hover:opacity-90 transition-opacity ${colors.bg}`}
+                className={`pl-4 cursor-pointer hover:opacity-90 transition-opacity `}
                 onClick={() => toggleSection(status)}
             >
                 <div className="flex items-center justify-between">
