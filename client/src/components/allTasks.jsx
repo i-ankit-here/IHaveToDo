@@ -5,8 +5,7 @@ import {CollapsibleSection} from './collapsible';
 
 function AllTasks({ todos, setTodos, Id, team, pendingTodos, inProgressTodos, completedTodos, toggleSection, collapsedSections }) {
     return (
-        <div className='flex-1 p-2 overflow-y-auto'>
-            {/* Collapsible Sections */}
+        <div className='flex-1 p-2 overflow-y-scroll'>
             <CollapsibleSection
                 title="Pending"
                 status="pending"
@@ -69,8 +68,6 @@ function AllTasks({ todos, setTodos, Id, team, pendingTodos, inProgressTodos, co
                     users={team}
                 />)}
             </CollapsibleSection>
-
-            <div className='h-20'></div>
         </div>
     )
 }

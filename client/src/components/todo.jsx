@@ -156,15 +156,15 @@ const Todo = () => {
 
     return (
         <>
-            <div className='flex gap-0 h-dvh overflow-y-hidden'>
+            <div className='flex h-[calc(100dvh-60px)] gap-0'>
                 <Sidebar
                     activeView={activeView}
                     setActiveView={setActiveView}
                     directMessages={directMessages}
                     groupChat={groupChat}
                 />
-                <div className='flex flex-col w-full'>
-                    <div className="px-6 pt-6 pb-2 mx-2 border-b-1">
+                <div className='flex h-[calc(100dvh-60px)] flex-col w-full'>
+                    <div className="px-6 h-24 pt-2 pb-2 mx-2 border-b-1">
                         <h1 className="text-4xl font-bold themed-text">
                             {`${state?.title || 'Project'}`}
                         </h1>
@@ -173,7 +173,7 @@ const Todo = () => {
                         </p>
                     </div>
                     {activeView === 'all-tasks' && (todos.length == 0 ?
-                        <div className='flex-1 flex items-center justify-center w-full'>
+                        <div className='flex-1 h-full flex items-center justify-center w-full'>
                             <div className="w-full">
                                 <p className="text-xl text-center w-full themed-text-secondary">
                                     Add your first task by clicking on the add button
@@ -243,7 +243,7 @@ const Todo = () => {
                         <div className="text-center themed-text-secondary"><Plus className="w-8 h-8" /></div>
                     </Card>
                 }
-        </div >
+            </div >
         </>
     )
 }

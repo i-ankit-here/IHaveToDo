@@ -164,11 +164,6 @@ const MajorTodo = () => {
         <>
             <div className={`flex h-dvh overflow-y-hidden themed-bg ${inviteFlag ? "opacity-20" : "opacity-100"}`}>
                 <aside className="w-[27dvw] min-w-[300px] h-full themed-bg p-4 flex flex-col gap-4 border-r-2">
-                    <div className='flex items-center gap-2 px-2 pb-4 '>
-                        <img src="/iHaveToDo.svg" className="h-10 icon-logo" alt="Logo" />
-                        {/* <h1 className="text-2xl font-bold themed-text">ProjectFlow</h1> */}
-                    </div>
-
                     <nav className="flex flex-col gap-2">
                         <Button variant="ghost" className="justify-start gap-3 text-md h-12">
                             <LayoutGrid className="w-5 h-5" /> Dashboard

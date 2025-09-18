@@ -6,7 +6,7 @@ import { getEvents, setEvent, deleteEvent } from "../controllers/calendar.contro
 const router = express.Router();
 
 // Example: List upcoming events
-router.get('/events', verifyJWT, getAuthenticatedClient, getEvents);
+router.post('/events', verifyJWT, getAuthenticatedClient, getEvents);
 
 // Example: Create an event (a new "ToDo")
 // router.post('/events', verifyJWT, getAuthenticatedClient, setEvent);

@@ -102,7 +102,7 @@ const Invite = ({ userIds, onClose, todoId, title, inviteeName }) => {
 
             <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 themed-bg-secondary themed-text w-[40dvw] max-w-lg min-w-[320px] rounded-lg shadow-lg p-6 flex flex-col z-50 max-h-[80vh]">
 
-                <div className="flex justify-between items-center pb-3 mb-4 border-b themed-border">
+                <div className="flex justify-between items-center pb-3 mb-4 border-b ">
                     <h2 className="text-xl font-semibold">Invite Members</h2>
                     <Button variant="ghost" size="icon" onClick={onClose} className="rounded-full">
                         <X className="w-5 h-5" />

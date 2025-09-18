@@ -6,8 +6,8 @@ import Calendar from './calendar';
 
 function MyTasks({ todos, setTodos, Id, team, pendingTodos, inProgressTodos, completedTodos, toggleSection, collapsedSections, userId }) {
     return (
-        <div className='flex gap-1 h-full'>
-            <div className='flex-1 p-2 overflow-y-scroll'>
+        <div className='flex gap-1 h-[calc(100dvh-156px)]'>
+            <div className='flex-1 p-2 h-full overflow-y-scroll'>
                 <CollapsibleSection
                     title="Pending"
                     status="pending"
@@ -70,8 +70,6 @@ function MyTasks({ todos, setTodos, Id, team, pendingTodos, inProgressTodos, com
                         users={team}
                     />)}
                 </CollapsibleSection>
-
-                <div className='h-20'></div>
             </div>
             <Calendar />
         </div>

@@ -12,17 +12,14 @@ const Home = () => {
 
 
     return (
-        <div>                   
-            <div className=' w-50 sticky mt-[-44px] top-4 pl-10 z-20'>
-                <img src="/iHaveToDo.svg" alt="" className={`${theme == "light" ? "invert-100" : ""} w-full`} />
-            </div>
+        <div>
             {theme == "light" && <div className='-z-10 absolute top-20 left-15 bg-blue-100 rotate-10 w-[90dvw] h-[80dvh]'></div>}
             {theme == "light" && <div className='-z-10 absolute top-24 left-10 bg-blue-100 -rotate-6 w-[90dvw] h-[80dvh]'></div>}
             <div className='w-full p-2 h-[100dvh] items-center flex gap-2 mb-32'>
-                <div className='ml-25 p-10 h-[80dvh] w-[49dvw] flex flex-col justify-center'>
+                <div className='ml-25 p-10 h-[80dvh] w-[49dvw] flex flex-col gap-2 justify-center'>
                     <p className={`text-6xl font-serif ${theme == 'light' ? "text-black" : "text-white"}`}>Organize your</p>
-                    <p className={`text-6xl font-serif ${theme == 'light' ? "text-black" : "text-white"}`}>work and </p>
-                    <p className={`text-6xl font-serif ${theme == 'light' ? "text-black" : "text-white"}`}>tasks easily</p>
+                    <p className={`text-6xl font-serif ${theme == 'light' ? "text-black" : "text-white"}`}>projects and </p>
+                    <p className={`text-6xl font-serif ${theme == 'light' ? "text-black" : "text-white"}`}>teamwork</p>
                     <button type="button" className='w-40 mt-15 text-2xl font-serif text-white cursor-pointer rounded-lg p-3 bg-red-500 hover:bg-red-700'
                         onClick={(e) => {
                             navigate("/register");
@@ -34,7 +31,7 @@ const Home = () => {
                 </div>
             </div>
 
-            <div className={`text-4xl font-serif text-center ${theme == "light" ? " text-black " : " text-white "}`}>Welcome to iHaveToDo – <span className=' italic '>Organize your life, one task at a time!</span></div>
+            <div className={`text-4xl font-serif text-center ${theme == "light" ? " text-black " : " text-white "}`}>Welcome to iHaveToDo – <span className=' italic '>Elevate your teamwork, one project at a time!</span></div>
 
             <div className='w-full p-2 flex gap-10 mt-32'>
                 <div className='pl-20 h-fit flex flex-col w-full'>
@@ -42,9 +39,9 @@ const Home = () => {
                         {theme == "light" && <div className='-z-10 mt-20 absolute top-0 -left-8 bg-green-400 rotate-4 w-[93dvw] h-[80dvh]'></div>}
                         {theme == "light" && <div className='-z-10 mt-20 absolute top-4 -left-8 bg-green-400 -rotate-6 w-[93dvw] h-[80dvh]'></div>}
                         <div className='p-10 h-[100dvh] w-[50dvw] flex flex-col justify-center'>
-                            <h1 className={`text-5xl font-serif ${theme == 'light' ? "text-black" : " text-white "} font-semibold`}>Task Categorization</h1>
-                            <p className={`mt-15 ml-2 text-2xl font-serif ${theme == 'light' ? "text-black" : " text-white "}`}>Organize todos into categories like </p>
-                            <p className={`ml-2 mt-1 text-2xl font-serif ${theme == 'light' ? "text-black" : " text-white "}`}> Fitness, Office, Daily, Weekly, etc.</p>
+                            <h1 className={`text-5xl font-serif ${theme == 'light' ? "text-black" : " text-white "} font-semibold`}>Manage Projects & Tasks</h1>
+                            <p className={`mt-15 ml-2 text-2xl font-serif ${theme == 'light' ? "text-black" : " text-white "}`}>Assign tasks to collaborators with clear deadlines.</p>
+                            <p className={`ml-2 mt-1 text-2xl font-serif ${theme == 'light' ? "text-black" : " text-white "}`}>Arrange and prioritize work according to your order.</p>
                         </div>
                         <div className="pt-5 pl-5 pr-5 bg-orange-200 rounded-xl z-10 w-[50dvw]">
                             <img
@@ -59,10 +56,10 @@ const Home = () => {
                         {theme == "light" && <div className='-z-10 mt-20 absolute top-0 -left-8 bg-yellow-300 rotate-4 w-[93dvw] h-[80dvh]'></div>}
                         {theme == "light" && <div className='-z-10 mt-20 absolute top-4 -left-8 bg-yellow-300 -rotate-6 w-[93dvw] h-[80dvh]'></div>}
                         <div className='p-10 h-[100dvh] w-[50dvw] flex flex-col justify-center'>
-                            <h1 className={`text-5xl font-serif ${theme == 'light' ? "text-black" : " text-white "} font-semibold`}>Task Management </h1>
-                            <p className={`mt-15 ml-2 text-2xl font-serif ${theme == 'light' ? "text-black" : " text-white "}`}>Add, update and delete todos effortlessly </p>
-                            <p className={`mt-8 ml-2 text-2xl font-serif ${theme == 'light' ? "text-black" : " text-white "}`}> Mark your tasks as completed  </p>
-                            <p className={`ml-2 mt-1 text-2xl font-serif ${theme == 'light' ? "text-black" : " text-white "}`}> or remaining  </p>
+                            <h1 className={`text-5xl font-serif ${theme == 'light' ? "text-black" : " text-white "} font-semibold`}>Real-Time Collaboration</h1>
+                            <p className={`mt-15 ml-2 text-2xl font-serif ${theme == 'light' ? "text-black" : " text-white "}`}>Invite people to your projects and work together seamlessly.</p>
+                            <p className={`mt-8 ml-2 text-2xl font-serif ${theme == 'light' ? "text-black" : " text-white "}`}>Get real-time updates and use in-project chats</p>
+                            <p className={`ml-2 mt-1 text-2xl font-serif ${theme == 'light' ? "text-black" : " text-white "}`}>to stay in sync.</p>
                         </div>
                         <div className="pt-5 pl-5 pr-5 bg-orange-200 rounded-xl z-10 w-[50dvw]">
                             <img
@@ -77,10 +74,10 @@ const Home = () => {
                         {theme == "light" && <div className='-z-10 mt-20 absolute top-0 -left-8 bg-fuchsia-400 rotate-4 w-[93dvw] h-[80dvh]'></div>}
                         {theme == "light" && <div className='-z-10 mt-20 absolute top-4 -left-8 bg-fuchsia-400 -rotate-6 w-[93dvw] h-[80dvh]'></div>}
                         <div className='p-10 h-[100dvh] w-[50dvw] flex flex-col justify-center'>
-                            <h1 className={`text-5xl font-serif ${theme == 'light' ? "text-black" : " text-white "} font-semibold`}>Light & Dark Mode</h1>
-                            <p className={`mt-15 ml-2 text-2xl font-serif ${theme == 'light' ? "text-black" : " text-white "}`}>Switch effortlessly between </p>
-                            <p className={`mt-1 ml-2 text-2xl font-serif ${theme == 'light' ? "text-black" : " text-white "}`}>light and dark mode </p>
-                            <p className={`ml-2 mt-1 text-2xl font-serif ${theme == 'light' ? "text-black" : " text-white "}`}> to match your preference</p>
+                            <h1 className={`text-5xl font-serif ${theme == 'light' ? "text-black" : " text-white "} font-semibold`}>Google Calendar Integration</h1>
+                            <p className={`mt-15 ml-2 text-2xl font-serif ${theme == 'light' ? "text-black" : " text-white "}`}>Connect your Google Calendar</p>
+                            <p className={`mt-1 ml-2 text-2xl font-serif ${theme == 'light' ? "text-black" : " text-white "}`}>to sync deadlines and events effortlessly.</p>
+                            <p className={`ml-2 mt-1 text-2xl font-serif ${theme == 'light' ? "text-black" : " text-white "}`}>Never miss an important date.</p>
                         </div>
                         <div className="pt-5 pl-5 pr-5 bg-orange-200 rounded-xl z-10 w-[50dvw]">
                             <img
@@ -95,11 +92,10 @@ const Home = () => {
                         {theme == "light" && <div className='-z-10 mt-20 absolute top-0 -left-8 bg-teal-400 rotate-4 w-[93dvw] h-[80dvh]'></div>}
                         {theme == "light" && <div className='-z-10 mt-20 absolute top-4 -left-8 bg-teal-400 -rotate-6 w-[93dvw] h-[80dvh]'></div>}
                         <div className='p-10 h-[100dvh] w-[50dvw] flex flex-col justify-center'>
-                            <h1 className={`text-5xl font-serif ${theme == 'light' ? "text-black" : " text-white "} font-semibold`}>Track Your Progress with Colors!</h1>
-                            <p className={`mt-15 ml-2 text-2xl font-serif ${theme == 'light' ? "text-black" : " text-white "}`}>Assign unique colors to each category</p>
-                            <p className={`ml-2 mt-1 text-2xl font-serif ${theme == 'light' ? "text-black" : " text-white "}`}> for easy identification</p>
-                            <p className={`mt-8 ml-2 text-2xl font-serif ${theme == 'light' ? "text-black" : " text-white "}`}>Track your Total, completed </p>
-                            <p className={`ml-2 mt-1 text-2xl font-serif ${theme == 'light' ? "text-black" : " text-white "}`}> and remaining tasks</p>
+                            <h1 className={`text-5xl font-serif ${theme == 'light' ? "text-black" : " text-white "} font-semibold`}>Actionable Project Summaries</h1>
+                            <p className={`mt-15 ml-2 text-2xl font-serif ${theme == 'light' ? "text-black" : " text-white "}`}>Get a clear overview of your project's status.</p>
+                            <p className={`mt-8 ml-2 text-2xl font-serif ${theme == 'light' ? "text-black" : " text-white "}`}>Track total, completed,</p>
+                            <p className={`ml-2 mt-1 text-2xl font-serif ${theme == 'light' ? "text-black" : " text-white "}`}>and pending tasks at a glance.</p>
                         </div>
                         <div className="pt-5 pl-5 pr-5 bg-orange-200 rounded-xl z-10 w-[50dvw]">
                             <img
@@ -116,7 +112,7 @@ const Home = () => {
 
             <div className='w-full flex flex-col items-center'>
                 <div className='w-full flex justify-center'>
-                    <h1 className={`text-5xl font-semibold font-serif ${theme == "light" ? "text-black" : "text-white"}`}>Start managing your tasks </h1>
+                    <h1 className={`text-5xl font-semibold font-serif ${theme == "light" ? "text-black" : "text-white"}`}>Start managing your projects</h1>
                 </div>
                 <button type="button" className='w-40 mt-15 text-2xl font-serif text-white cursor-pointer rounded-lg p-3 bg-red-500 hover:bg-red-700'
                     onClick={(e) => {

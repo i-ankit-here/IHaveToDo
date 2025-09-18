@@ -67,15 +67,15 @@ const Login = () => {
     };
 
     return (
-        <div className="flex h-dvh w-full items-center justify-center bg-background p-4">
+        <div className="flex h-dvh w-full items-center justify-center bg-background p-4 pb-30">
             <Card className="relative w-full max-w-md overflow-hidden">
                 <CardHeader>
-                    <CardTitle className="text-3xl">Sign In</CardTitle>
-                    <CardDescription>Enter your credentials to continue.</CardDescription>
+                    <CardTitle className="text-3xl text-center">Sign In</CardTitle>
+                    <CardDescription className="text-center">Enter your credentials to continue.</CardDescription>
                 </CardHeader>
                 <form onSubmit={submit}>
                     <CardContent className="space-y-4">
-                        <div className="grid w-full items-center gap-1.5">
+                        <div className="grid w-full items-center gap-2">
                             <Label htmlFor="username">Username</Label>
                             <div className="flex items-center">
                                 <Input
@@ -88,7 +88,7 @@ const Login = () => {
                                 />
                             </div>
                         </div>
-                        <div className="grid w-full items-center gap-1.5">
+                        <div className="grid w-full items-center gap-2">
                             <Label htmlFor="password">Password</Label>
                              <div className="flex items-center">
                                 <Input
@@ -102,8 +102,8 @@ const Login = () => {
                             </div>
                         </div>
                     </CardContent>
-                    <CardFooter className="flex flex-col gap-4">
-                        <Button type="submit" disabled={showSlider} className="w-full">
+                    <CardFooter className="flex mt-12 flex-col gap-4">
+                        <Button type="submit" disabled={showSlider} className="w-full cursor-pointer">
                            Sign In
                         </Button>
                         {feedback.message && (

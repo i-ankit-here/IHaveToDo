@@ -4,11 +4,14 @@ import { google } from "googleapis";
 import { apiError } from "../utils/apiError.js";
 
 const getEvents = asyncHandler(async (req, res) => {
+    if(!req.googleClient) return new apiError(401, "Unauthorized: Google Calendar is not connected");
     const calendar = google.calendar({ version: 'v3', auth: req.googleClient });
-    console.log("calendar", calendar);
+    // console.log("calendar", calendar);
+    const {startDate, endDate} = req.body;
     const response = await calendar.events.list({
         calendarId: 'primary',
-        timeMin: (new Date()).toISOString(),
+        timeMin: startDate,
+        timeMax: endDate,
         maxResults: 10,
         singleEvents: true,
         orderBy: 'startTime',

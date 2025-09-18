@@ -15,7 +15,7 @@ function Navbar() {
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
-    localStorage.setItem('theme', theme); 
+    localStorage.setItem('theme', theme);
   }, [theme]);
 
 
@@ -45,8 +45,10 @@ function Navbar() {
   };
 
   return (
-    <div className={`h-15 ${path === "/" ? " sticky " : " absolute "} top-0 right-1 flex justify-end items-center m-0 themed-bg z-20 ${(show === "/login" || show === "/register") && theme === "dark" ? "!bg-black" : ""}`}>
-
+    <div className={`h-15 sticky top-0 right-1 flex justify-between items-center m-0 themed-bg z-20 ${theme === "dark" ? "bg-black" : ""}`}>
+      <div className=' w-50 pl-10 z-20'>
+        <img src="/iHaveToDo.svg" alt="" className={`${theme == "light" ? "invert-100" : ""} w-full`} />
+      </div>
       <div className="themed-text flex items-center">
         <img
           src={theme === "light" ? "/darkTheme.png" : "/lightTheme.png"}
@@ -75,7 +77,7 @@ function Navbar() {
         )}
       </div>
       {
-        view && user && ( 
+        view && user && (
           <div className="absolute top-15 right-1 h-60 w-60 rounded-md p-3 justify-around flex flex-col gap-3 border-1 themed-bg-secondary themed-border">
             <div className='w-full flex justify-center'>
               <img src={user.avatar ? user.avatar : "/userimg.jpg"} className='h-15 rounded-full' alt="User avatar" />
@@ -83,12 +85,12 @@ function Navbar() {
             <div className='w-full flex justify-center'>
               <p className="themed-text font-bold">Hi, {user.firstname}</p>
             </div>
-            
+
             <div className="flex gap-2 justify-start cursor-pointer" onClick={() => { setView(false); navigate("/profile"); }}>
               <img src="/username.svg" alt="" className="icon-profile" />
               <p className="themed-text-secondary">Profile</p>
             </div>
-            
+
             <div className="flex gap-2 justify-start cursor-pointer" onClick={() => { setView(false); navigate("/dashboard"); }}>
               <LayoutGrid className="h-5 w-5 icon-dashboard" />
               <p className="themed-text-secondary">Dashboard</p>

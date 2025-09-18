@@ -46,7 +46,7 @@ export const CollapsibleSection = ({ title, status, count, icon, children, toggl
 
 
     return (
-        <Card className={`mb-6 overflow-hidden transition-all duration-300 ${colors.bg} ${colors.border} border-3`}>
+        <Card className={`mb-6 transition-all duration-300 ${colors.bg} ${colors.border} border-3`}>
             <CardHeader
                 className={`pl-4 cursor-pointer hover:opacity-90 transition-opacity `}
                 onClick={() => toggleSection(status)}
@@ -59,9 +59,6 @@ export const CollapsibleSection = ({ title, status, count, icon, children, toggl
                         <h3 className={`text-2xl font-bold ${colors.text}`}>
                             {title}
                         </h3>
-                        {/* <Badge variant="secondary" className={`ml-2 ${colors.text} } `}>
-                                {count}
-                            </Badge> */}
                     </div>
                     <div className={`transition-transform duration-200 ${isCollapsed ? 'rotate-0' : 'rotate-180'} ${colors.text}`}>
                         <ChevronDown className="h-5 w-5" />
@@ -69,13 +66,10 @@ export const CollapsibleSection = ({ title, status, count, icon, children, toggl
                 </div>
             </CardHeader>
 
-            <div className={`transition-all duration-300 overflow-hidden ${isCollapsed ? 'max-h-0' : 'max-h-none'}`}>
+            <div className={`transition-all duration-300 overflow-hidden ${isCollapsed ? 'max-h-0' : ''}`}>
                 <CardContent className="px-4 pt-0">
                     {isEmpty ? (
                         <div className={`text-center py-8 ${theme === 'light' ? 'text-gray-500' : 'text-gray-400'}`}>
-                            {/* <div className={`${colors.text} opacity-50 mb-2`}>
-                                    {icon}
-                                </div> */}
                             <p className="text-lg">No {title.toLowerCase()} tasks</p>
                         </div>
                     ) : (
